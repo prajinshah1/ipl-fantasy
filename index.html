@@ -3645,10 +3645,44 @@ function doLogin(){
   }
 
   async function guardedSave(){
-    if (!window.__firebaseLoadedState) {
-      console.warn('Blocked save before initial Firebase load completed');
-      return false;
-    }
+  if (!window.__firebaseLoadedState) {
+    console.log("Blocked save before Firebase load");
+    return false;
+  }
+
+  const state = normalizeState(getStateRef());
+
+  if (!state || !Array.isArray(state.waivers)) {
+    console.log("Blocked invalid state save");
+    return false;
+  }
+
+  if (state.waivers.length === 0) {
+    console.log("Blocked empty overwrite");
+    return false;
+  }
+
+  if (window.__firebaseSavingState) return true;
+
+  try {
+    window.__firebaseSavingState = true;
+    await window.__firebaseReadyPromise;
+
+    await window.saveRemoteLeagueState({
+      waivers: state.waivers,
+      transfers: state.transfers,
+      budgets: state.budgets
+    });
+
+    console.log("Saved safely");
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  } finally {
+    window.__firebaseSavingState = false;
+  }
+}
     if (window.__firebaseSavingState) return true;
 
     const state = normalizeState(getStateRef());
