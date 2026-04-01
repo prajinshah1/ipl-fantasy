@@ -3579,7 +3579,10 @@ function doLogin(){
 
 
 
-<script id="firebase-anti-overwrite-fix">
+
+
+
+<script id="firebase-permanent-fix">
 (function(){
   function defaultBudgets(){
     return {
@@ -3609,83 +3612,71 @@ function doLogin(){
     return window.waiverState;
   }
 
-  function applyRemoteState(data){
-    const state = normalizeState(data);
+  function setState(state){
+    const clean = normalizeState(state);
     const ref = getStateRef();
-    ref.waivers = state.waivers;
-    ref.transfers = state.transfers;
-    ref.budgets = state.budgets;
-
+    ref.waivers = clean.waivers;
+    ref.transfers = clean.transfers;
+    ref.budgets = clean.budgets;
     if (window.STATE && window.STATE !== ref) {
-      window.STATE.waivers = state.waivers;
-      window.STATE.transfers = state.transfers;
-      window.STATE.budgets = state.budgets;
+      window.STATE.waivers = clean.waivers;
+      window.STATE.transfers = clean.transfers;
+      window.STATE.budgets = clean.budgets;
     }
+    try { if (typeof localStorage !== 'undefined') localStorage.setItem('ipl_waiver_state_v1', JSON.stringify(clean)); } catch(e){}
+  }
 
-    try { if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage(); } catch(e){}
-    try { if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage(); } catch(e){}
-    try { if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage(); } catch(e){}
-    try { if (typeof refreshWaiverBalanceRow === 'function') refreshWaiverBalanceRow(); } catch(e){}
+  function rerenderWaiverUI(){
+    try { if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage(); } catch(e){ console.error(e); }
+    try { if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage(); } catch(e){ console.error(e); }
+    try { if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage(); } catch(e){ console.error(e); }
+    try { if (typeof refreshWaiverBalanceRow === 'function') refreshWaiverBalanceRow(); } catch(e){ console.error(e); }
   }
 
   window.__firebaseLoadedState = false;
   window.__firebaseSavingState = false;
+  window.__firebaseApplyingRemote = false;
 
-  async function loadFromFirebaseFirst(){
+  async function loadRemoteFirst(){
     await window.__firebaseReadyPromise;
     const remote = await window.loadRemoteLeagueState();
+
     if (remote) {
-      applyRemoteState(remote);
+      window.__firebaseApplyingRemote = true;
+      setState(remote);
+      rerenderWaiverUI();
+      window.__firebaseApplyingRemote = false;
     } else {
       const initial = normalizeState(getStateRef());
       await window.saveRemoteLeagueState(initial);
-      applyRemoteState(initial);
+      window.__firebaseApplyingRemote = true;
+      setState(initial);
+      rerenderWaiverUI();
+      window.__firebaseApplyingRemote = false;
     }
+
     window.__firebaseLoadedState = true;
   }
 
-  async function guardedSave(){
-  if (!window.__firebaseLoadedState) {
-    console.log("Blocked save before Firebase load");
-    return false;
-  }
-
-  const state = normalizeState(getStateRef());
-
-  if (!state || !Array.isArray(state.waivers)) {
-    console.log("Blocked invalid state save");
-    return false;
-  }
-
-  if (state.waivers.length === 0) {
-    console.log("Blocked empty overwrite");
-    return false;
-  }
-
-  if (window.__firebaseSavingState) return true;
-
-  try {
-    window.__firebaseSavingState = true;
-    await window.__firebaseReadyPromise;
-
-    await window.saveRemoteLeagueState({
-      waivers: state.waivers,
-      transfers: state.transfers,
-      budgets: state.budgets
-    });
-
-    console.log("Saved safely");
-    return true;
-  } catch (e) {
-    console.error(e);
-    return false;
-  } finally {
-    window.__firebaseSavingState = false;
-  }
-}
+  async function saveCurrentStateToFirebase(opts){
+    opts = opts || {};
+    if (!window.__firebaseLoadedState) {
+      console.warn('Blocked save: Firebase not loaded yet');
+      return false;
+    }
+    if (window.__firebaseApplyingRemote) {
+      console.warn('Blocked save: applying remote snapshot');
+      return false;
+    }
     if (window.__firebaseSavingState) return true;
 
     const state = normalizeState(getStateRef());
+
+    if (!opts.allowEmptyWaivers && state.waivers.length === 0) {
+      console.warn('Blocked save: refusing to overwrite Firebase with empty waivers');
+      return false;
+    }
+
     try {
       window.__firebaseSavingState = true;
       await window.__firebaseReadyPromise;
@@ -3694,38 +3685,123 @@ function doLogin(){
         transfers: state.transfers,
         budgets: state.budgets
       });
-      console.log('Saved to Firebase safely');
+      try { if (typeof localStorage !== 'undefined') localStorage.setItem('ipl_waiver_state_v1', JSON.stringify(state)); } catch(e){}
+      console.log('Saved current state to Firebase');
       return true;
-    } catch(e){
-      console.error('Firebase guarded save failed', e);
+    } catch (e) {
+      console.error('Firebase save failed', e);
       return false;
     } finally {
       window.__firebaseSavingState = false;
     }
   }
 
-  window.saveWaiverState = guardedSave;
+  window.saveWaiverState = saveCurrentStateToFirebase;
 
-  ['submitWaiverNomination','submitNomination','confirmWaiverNomination','submitWaiverBid','submitBid','adminCompleteWaiver','declareWaiverWinner','removeAllCompletedWaivers'].forEach(function(fnName){
-    const orig = window[fnName];
-    if (typeof orig !== 'function' || orig.__antiOverwriteWrapped) return;
+  // Direct, permanent nomination save
+  window.submitWaiverNomination = async function(){
+    var franchise = (typeof getCurrentWaiverFranchise === 'function') ? getCurrentWaiverFranchise() : (window.currentUser || '');
+    var outSelect = document.getElementById('waiverPlayerOutSelect');
+    var bidInput = document.getElementById('waiverNomBid');
+    var outPlayer = outSelect ? outSelect.value : '';
+    var amount = Number(bidInput ? (bidInput.value || 0) : 0);
 
-    window[fnName] = async function(){
-      const result = await orig.apply(this, arguments);
-      await guardedSave();
-      return result;
-    };
-    window[fnName].__antiOverwriteWrapped = true;
-  });
+    if (!window.waiverNomSelectedPlayer) { alert('Select a player coming in.'); return; }
+    if (!outPlayer) { alert('Select a player going out.'); return; }
+
+    var err = (typeof validateWaiverBid === 'function') ? validateWaiverBid(amount, franchise) : '';
+    if (err) { alert(err); return; }
+
+    var ref = getStateRef();
+    var now = Date.now();
+    var closes = now + 24*60*60*1000;
+
+    ref.waivers.unshift({
+      id: 'W' + now,
+      playerName: window.waiverNomSelectedPlayer,
+      nominatedBy: franchise,
+      createdAt: now,
+      bidClosesAt: closes,
+      status: 'active',
+      bids: [{
+        franchise: franchise,
+        amount: amount,
+        dropPlayer: outPlayer,
+        timestamp: now,
+        isNomination: true
+      }]
+    });
+
+    const saved = await saveCurrentStateToFirebase({ allowEmptyWaivers: false });
+    if (!saved) {
+      alert('Cloud save failed. Please try again.');
+      return;
+    }
+
+    try { if (typeof closeWaiverModal === 'function') closeWaiverModal('waiverNominationModal'); } catch(e){}
+    rerenderWaiverUI();
+  };
+
+  // Direct, permanent bid save
+  window.submitWaiverBid = async function(){
+    var ref = getStateRef();
+    var waiver = (ref.waivers || []).find(function(w){ return w.id === window.waiverBidTargetId; });
+    if (!waiver) return;
+
+    var me = (typeof getCurrentWaiverFranchise === 'function') ? getCurrentWaiverFranchise() : (window.currentUser || '');
+    var amount = Number((document.getElementById('waiverBidAmount') || {}).value || 0);
+    var outPlayer = (document.getElementById('waiverBidOutSelect') || {}).value || '';
+
+    if (!outPlayer) { alert('Select player to drop.'); return; }
+    var err = (typeof validateWaiverBid === 'function') ? validateWaiverBid(amount, me, waiver.id) : '';
+    if (err) { alert(err); return; }
+
+    waiver.bids = (waiver.bids || []).filter(function(b){ return b.franchise !== me; });
+    waiver.bids.push({ franchise: me, amount: amount, dropPlayer: outPlayer, timestamp: Date.now() });
+
+    const saved = await saveCurrentStateToFirebase({ allowEmptyWaivers: false });
+    if (!saved) {
+      alert('Cloud save failed. Please try again.');
+      return;
+    }
+
+    try { if (typeof closeWaiverModal === 'function') closeWaiverModal('waiverBidModal'); } catch(e){}
+    rerenderWaiverUI();
+  };
+
+  // Direct, permanent winner save
+  window.adminCompleteWaiver = async function(id){
+    var ref = getStateRef();
+    var waiver = (ref.waivers || []).find(function(w){ return w.id === id; });
+    if (!waiver) return;
+
+    var winner = (typeof computeWaiverWinner === 'function') ? computeWaiverWinner(waiver) : null;
+    if (!winner) { alert('No bids found.'); return; }
+
+    waiver.winner = winner;
+    waiver.completedAt = Date.now();
+    waiver.status = 'completed';
+
+    const saved = await saveCurrentStateToFirebase({ allowEmptyWaivers: true });
+    if (!saved) {
+      alert('Cloud save failed. Please try again.');
+      return;
+    }
+
+    rerenderWaiverUI();
+  };
 
   document.addEventListener('DOMContentLoaded', async function(){
     try {
-      await loadFromFirebaseFirst();
+      await loadRemoteFirst();
       window.listenRemoteLeagueState(function(data){
-        applyRemoteState(data);
+        window.__firebaseApplyingRemote = true;
+        setState(data);
+        rerenderWaiverUI();
+        window.__firebaseApplyingRemote = false;
       });
-    } catch(e){
-      console.error('Firebase listener bootstrap failed', e);
+    } catch (e) {
+      console.error('Firebase bootstrap failed', e);
     }
   });
 })();
