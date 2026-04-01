@@ -3664,5 +3664,104 @@ function doLogin(){
 })();
 </script>
 
+
+<script id="firebase-save-fix-v2">
+(function(){
+  function getStateRef(){
+    if (window.waiverState && typeof window.waiverState === 'object') return window.waiverState;
+    if (window.STATE && typeof window.STATE === 'object') return window.STATE;
+    window.waiverState = {};
+    return window.waiverState;
+  }
+
+  function defaultBudgets(){
+    return {
+      Bhavya: 250000,
+      Darshil: 250000,
+      Hersh: 250000,
+      Jash: 250000,
+      Karan: 250000,
+      Prajin: 250000,
+      Sanket: 250000,
+      Admin: 250000
+    };
+  }
+
+  function normalizeState(state){
+    return {
+      waivers: Array.isArray(state && state.waivers) ? state.waivers : [],
+      transfers: Array.isArray(state && state.transfers) ? state.transfers : [],
+      budgets: state && state.budgets && typeof state.budgets === 'object' ? state.budgets : defaultBudgets()
+    };
+  }
+
+  async function pushStateToFirebase(){
+    const state = normalizeState(getStateRef());
+
+    try {
+      await window.__firebaseReadyPromise;
+      await window.saveRemoteLeagueState({
+        waivers: state.waivers,
+        transfers: state.transfers,
+        budgets: state.budgets
+      });
+      console.log('Saved to Firebase', state);
+      return true;
+    } catch (e) {
+      console.error('Firebase save failed', e);
+      return false;
+    }
+  }
+
+  function syncUIFromRemote(data){
+    const state = normalizeState(data);
+    const ref = getStateRef();
+    ref.waivers = state.waivers;
+    ref.transfers = state.transfers;
+    ref.budgets = state.budgets;
+
+    if (window.STATE && window.STATE !== ref) {
+      window.STATE.waivers = state.waivers;
+      window.STATE.transfers = state.transfers;
+      window.STATE.budgets = state.budgets;
+    }
+
+    try { if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage(); } catch(e){}
+    try { if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage(); } catch(e){}
+    try { if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage(); } catch(e){}
+    try { if (typeof refreshWaiverBalanceRow === 'function') refreshWaiverBalanceRow(); } catch(e){}
+  }
+
+  window.saveWaiverState = async function(){
+    return await pushStateToFirebase();
+  };
+
+  ['submitWaiverNomination','submitNomination','confirmWaiverNomination','submitWaiverBid','submitBid','adminCompleteWaiver','declareWaiverWinner'].forEach(function(fnName){
+    const orig = window[fnName];
+    if (typeof orig !== 'function' || orig.__firebaseSaveWrapped) return;
+
+    window[fnName] = async function(){
+      const result = await orig.apply(this, arguments);
+      await pushStateToFirebase();
+      return result;
+    };
+    window[fnName].__firebaseSaveWrapped = true;
+  });
+
+  document.addEventListener('DOMContentLoaded', async function(){
+    try {
+      await window.__firebaseReadyPromise;
+      const remote = await window.loadRemoteLeagueState();
+      if (remote) syncUIFromRemote(remote);
+      window.listenRemoteLeagueState(function(data){
+        syncUIFromRemote(data);
+      });
+    } catch (e) {
+      console.error('Firebase bootstrap/listener failed', e);
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
