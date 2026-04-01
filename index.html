@@ -3573,12 +3573,14 @@ function doLogin(){
 </script>
 
 
-<script id="firebase-live-sync-patch">
-(function(){
-  function safeCall(fn){
-    try { return fn(); } catch(e){ console.error(e); }
-  }
 
+
+
+
+
+
+<script id="firebase-anti-overwrite-fix">
+(function(){
   function defaultBudgets(){
     return {
       Bhavya: 250000,
@@ -3592,13 +3594,6 @@ function doLogin(){
     };
   }
 
-  function getStateRef(){
-    if (window.waiverState) return window.waiverState;
-    if (window.STATE && typeof window.STATE === 'object') return window.STATE;
-    window.waiverState = {};
-    return window.waiverState;
-  }
-
   function normalizeState(state){
     return {
       waivers: Array.isArray(state && state.waivers) ? state.waivers : [],
@@ -3607,66 +3602,6 @@ function doLogin(){
     };
   }
 
-  function applyRemoteState(data){
-    const state = normalizeState(data);
-    const ref = getStateRef();
-    ref.waivers = state.waivers;
-    ref.transfers = state.transfers;
-    ref.budgets = state.budgets;
-
-    if (window.STATE && window.STATE !== ref) {
-      window.STATE.waivers = state.waivers;
-      window.STATE.transfers = state.transfers;
-      window.STATE.budgets = state.budgets;
-    }
-
-    safeCall(function(){ if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage(); });
-    safeCall(function(){ if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage(); });
-    safeCall(function(){ if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage(); });
-    safeCall(function(){ if (typeof refreshWaiverBalanceRow === 'function') refreshWaiverBalanceRow(); });
-  }
-
-  async function bootstrapFirebaseState(){
-    await window.__firebaseReadyPromise;
-
-    try {
-      localStorage.removeItem('ipl_waiver_state_v1');
-    } catch(e) {}
-
-    const ref = getStateRef();
-    const localState = normalizeState(ref);
-    const remote = await window.loadRemoteLeagueState();
-
-    if (!remote) {
-      await window.saveRemoteLeagueState(localState);
-    } else {
-      applyRemoteState(remote);
-    }
-
-    window.listenRemoteLeagueState(function(data){
-      applyRemoteState(data);
-    });
-  }
-
-  const originalSave = window.saveWaiverState;
-  window.saveWaiverState = async function(){
-    const state = normalizeState(getStateRef());
-    await window.__firebaseReadyPromise;
-    await window.saveRemoteLeagueState(state);
-    if (typeof originalSave === 'function') {
-      try { originalSave(); } catch(e) {}
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', function(){
-    bootstrapFirebaseState();
-  });
-})();
-</script>
-
-
-<script id="firebase-save-fix-v2">
-(function(){
   function getStateRef(){
     if (window.waiverState && typeof window.waiverState === 'object') return window.waiverState;
     if (window.STATE && typeof window.STATE === 'object') return window.STATE;
@@ -3674,46 +3609,7 @@ function doLogin(){
     return window.waiverState;
   }
 
-  function defaultBudgets(){
-    return {
-      Bhavya: 250000,
-      Darshil: 250000,
-      Hersh: 250000,
-      Jash: 250000,
-      Karan: 250000,
-      Prajin: 250000,
-      Sanket: 250000,
-      Admin: 250000
-    };
-  }
-
-  function normalizeState(state){
-    return {
-      waivers: Array.isArray(state && state.waivers) ? state.waivers : [],
-      transfers: Array.isArray(state && state.transfers) ? state.transfers : [],
-      budgets: state && state.budgets && typeof state.budgets === 'object' ? state.budgets : defaultBudgets()
-    };
-  }
-
-  async function pushStateToFirebase(){
-    const state = normalizeState(getStateRef());
-
-    try {
-      await window.__firebaseReadyPromise;
-      await window.saveRemoteLeagueState({
-        waivers: state.waivers,
-        transfers: state.transfers,
-        budgets: state.budgets
-      });
-      console.log('Saved to Firebase', state);
-      return true;
-    } catch (e) {
-      console.error('Firebase save failed', e);
-      return false;
-    }
-  }
-
-  function syncUIFromRemote(data){
+  function applyRemoteState(data){
     const state = normalizeState(data);
     const ref = getStateRef();
     ref.waivers = state.waivers;
@@ -3732,32 +3628,70 @@ function doLogin(){
     try { if (typeof refreshWaiverBalanceRow === 'function') refreshWaiverBalanceRow(); } catch(e){}
   }
 
-  window.saveWaiverState = async function(){
-    return await pushStateToFirebase();
-  };
+  window.__firebaseLoadedState = false;
+  window.__firebaseSavingState = false;
 
-  ['submitWaiverNomination','submitNomination','confirmWaiverNomination','submitWaiverBid','submitBid','adminCompleteWaiver','declareWaiverWinner'].forEach(function(fnName){
+  async function loadFromFirebaseFirst(){
+    await window.__firebaseReadyPromise;
+    const remote = await window.loadRemoteLeagueState();
+    if (remote) {
+      applyRemoteState(remote);
+    } else {
+      const initial = normalizeState(getStateRef());
+      await window.saveRemoteLeagueState(initial);
+      applyRemoteState(initial);
+    }
+    window.__firebaseLoadedState = true;
+  }
+
+  async function guardedSave(){
+    if (!window.__firebaseLoadedState) {
+      console.warn('Blocked save before initial Firebase load completed');
+      return false;
+    }
+    if (window.__firebaseSavingState) return true;
+
+    const state = normalizeState(getStateRef());
+    try {
+      window.__firebaseSavingState = true;
+      await window.__firebaseReadyPromise;
+      await window.saveRemoteLeagueState({
+        waivers: state.waivers,
+        transfers: state.transfers,
+        budgets: state.budgets
+      });
+      console.log('Saved to Firebase safely');
+      return true;
+    } catch(e){
+      console.error('Firebase guarded save failed', e);
+      return false;
+    } finally {
+      window.__firebaseSavingState = false;
+    }
+  }
+
+  window.saveWaiverState = guardedSave;
+
+  ['submitWaiverNomination','submitNomination','confirmWaiverNomination','submitWaiverBid','submitBid','adminCompleteWaiver','declareWaiverWinner','removeAllCompletedWaivers'].forEach(function(fnName){
     const orig = window[fnName];
-    if (typeof orig !== 'function' || orig.__firebaseSaveWrapped) return;
+    if (typeof orig !== 'function' || orig.__antiOverwriteWrapped) return;
 
     window[fnName] = async function(){
       const result = await orig.apply(this, arguments);
-      await pushStateToFirebase();
+      await guardedSave();
       return result;
     };
-    window[fnName].__firebaseSaveWrapped = true;
+    window[fnName].__antiOverwriteWrapped = true;
   });
 
   document.addEventListener('DOMContentLoaded', async function(){
     try {
-      await window.__firebaseReadyPromise;
-      const remote = await window.loadRemoteLeagueState();
-      if (remote) syncUIFromRemote(remote);
+      await loadFromFirebaseFirst();
       window.listenRemoteLeagueState(function(data){
-        syncUIFromRemote(data);
+        applyRemoteState(data);
       });
-    } catch (e) {
-      console.error('Firebase bootstrap/listener failed', e);
+    } catch(e){
+      console.error('Firebase listener bootstrap failed', e);
     }
   });
 })();
