@@ -689,6 +689,39 @@ window.__firebaseReadyPromise = (async function(){
 }
 </style>
 
+
+<style id="waiver-all-budget-style">
+.waiver-all-budget-wrap{
+  margin:0 0 18px 0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.18);
+}
+.waiver-all-budget-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text);
+  margin-bottom:4px;
+}
+.waiver-all-budget-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+.waiver-all-budget-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;
+}
+.waiver-all-budget-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:12px 12px 10px;
+}
+.waiver-all-budget-name{font-size:12px;color:var(--text2);margin-bottom:6px;}
+.waiver-all-budget-value{font-family:'Rajdhani',sans-serif;font-size:24px;line-height:1;font-weight:800;color:var(--gold);}
+.waiver-all-budget-foot{font-size:11px;color:var(--muted);margin-top:6px;}
+@media(max-width:740px){
+  .waiver-all-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -2483,6 +2516,7 @@ function renderWaiverOpenPage(){
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
   var html = '';
+  html += (typeof renderAllFranchiseBudgetsBox==='function' ? renderAllFranchiseBudgetsBox() : '');
   html += (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '');
   html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
@@ -3933,6 +3967,46 @@ function doLogin(){
       window[fnName].__premiumBudgetWrapped = true;
     }
   });
+})();
+</script>
+
+
+<script id="waiver-all-budget-script">
+(function(){
+  const ALL_FRS = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
+  function fmtInr(v){
+    try { return '₹' + Number(v || 0).toLocaleString('en-IN'); }
+    catch(e){ return '₹' + (v || 0); }
+  }
+  window.renderAllFranchiseBudgetsBox = function(){
+    const state = window.waiverState || window.STATE || {};
+    const budgets = {};
+    ALL_FRS.forEach(f => budgets[f] = 250000);
+
+    if (state && state.budgets && typeof state.budgets === 'object'){
+      ALL_FRS.forEach(f => {
+        if (state.budgets[f] != null) budgets[f] = Number(state.budgets[f]);
+      });
+    } else if (typeof window.getWaiverRemainingBudget === 'function'){
+      ALL_FRS.forEach(f => {
+        try { budgets[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
+      });
+    }
+
+    return `<div class="waiver-all-budget-wrap">
+      <div class="waiver-all-budget-title">Waiver Budget Remaining</div>
+      <div class="waiver-all-budget-sub">Visible to all franchises</div>
+      <div class="waiver-all-budget-grid">
+        ${ALL_FRS.map(f => `
+          <div class="waiver-all-budget-card">
+            <div class="waiver-all-budget-name">${f}</div>
+            <div class="waiver-all-budget-value">${fmtInr(budgets[f])}</div>
+            <div class="waiver-all-budget-foot">Remaining balance</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  };
 })();
 </script>
 
