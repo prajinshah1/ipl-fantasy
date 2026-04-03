@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPL Fantasy 2025</title>
+<title>IPL Fantasy 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -187,7 +187,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .waiver-result-pill.won{background:rgba(6,214,160,.16);color:#5df2c5;}.waiver-result-pill.lost{background:rgba(255,255,255,.08);color:#a7b0c8;}.waiver-result-pill.processed{background:rgba(6,214,160,.14);color:#48e8b7;}
 .waiver-success-bar{background:linear-gradient(90deg,rgba(0,230,168,.1),rgba(0,230,168,.02));border-radius:14px;padding:14px 16px;color:#62f5c9;font-size:14px;font-weight:700;margin-top:8px;}
 .waiver-toggle-link{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:#ff26f6;cursor:pointer;font-size:14px;font-weight:700;padding:0;margin:14px 0 12px;}
-.waiver-table-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.waiver-table-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin-bottom:14px;}
 .waiver-table{width:100%;border-collapse:collapse;min-width:720px;}
 .waiver-table th{padding:14px 16px;background:#202b49;color:#97a2bf;text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;}
 .waiver-table td{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06);color:#d9e1f2;}
@@ -617,9 +617,37 @@ window.__firebaseReadyPromise = (async function(){
 </script>
 
 
-<style id="waiver-history-row-fix">
-.waiver-history-row{display:none;}
-.waiver-history-row.open{display:table-row;}
+<style id="waiver-transfer-mobile-fix">
+@media(max-width:740px){
+  .waiver-table{min-width:880px;}
+  .waiver-table th,.waiver-table td{white-space:nowrap;}
+}
+</style>
+
+
+<style id="waiver-master-budget-style">
+.waiver-master-budget-wrap{
+  margin:0 0 18px 0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 10px 26px rgba(0,0,0,0.18);
+}
+.waiver-master-budget-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text);
+  margin-bottom:4px;
+}
+.waiver-master-budget-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+.waiver-master-budget-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+.waiver-master-budget-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:12px 12px 10px;}
+.waiver-master-budget-name{font-size:12px;color:var(--text2);margin-bottom:6px;}
+.waiver-master-budget-value{font-family:'Rajdhani',sans-serif;font-size:24px;line-height:1;font-weight:800;color:var(--gold);}
+.waiver-master-budget-foot{font-size:11px;color:var(--muted);margin-top:6px;}
+@media(max-width:740px){
+  .waiver-master-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
 </style>
 
 </head>
@@ -631,7 +659,7 @@ window.__firebaseReadyPromise = (async function(){
   <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
   <div class="nav-brand">
     <div class="nav-brand-icon">&#127921;</div>
-    <span class="nav-brand-name">IPL Fantasy 2025</span>
+    <span class="nav-brand-name">IPL Fantasy 2026</span>
   </div>
   <span class="nav-page-title" id="mobileTitle">Dashboard</span>
   <div class="nav-right"></div>
@@ -1040,9 +1068,9 @@ var PLAYERS = [
   {name:"Aman Rao",role:"BAT",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Amit Kumar",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
   {name:"Angkrish Raghuvanshi",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:"Sanket"},
-  {name:"Aniket Verma",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:""},
+  {name:"Aniket Verma",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:"Jash"},
   {name:"Anrich Nortje",role:"BOWL",origin:"OVS",iplTeam:"LSG",franchise:""},
-  {name:"Anshul Kamboj",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
+  {name:"Anshul Kamboj",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:"Darshil"},
   {name:"Anuj Rawat",role:"WK",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Anukul Roy",role:"AR",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Arjun Tendulkar",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
@@ -1056,17 +1084,17 @@ var PLAYERS = [
   {name:"Auqib Nabi",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Bhavya"},
   {name:"Avesh Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Hersh"},
   {name:"Axar Patel",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Jash"},
-  {name:"Ayush Badoni",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:""},
+  {name:"Ayush Badoni",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:"Jash"},
   {name:"Ayush Mhatre",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:"Jash"},
-  {name:"Azmatullah Omarzai",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Karan"},
+  {name:"Azmatullah Omarzai",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Ben Duckett",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Ben Dwarshuis",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Bhuvneshwar Kumar",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Hersh"},
-  {name:"Blessing Muzarabani",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:""},
+  {name:"Blessing Muzarabani",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:"Darshil"},
   {name:"Brijesh Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Brydon Carse",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Cameron Green",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Karan"},
-  {name:"Cooper Connolly",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
+  {name:"Cooper Connolly",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Hersh"},
   {name:"Corbin Bosch",role:"AR",origin:"OVS",iplTeam:"MI",franchise:""},
   {name:"Daksh Kamra",role:"AR",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Danish Malewar",role:"BAT",origin:"IND",iplTeam:"MI",franchise:""},
@@ -1095,9 +1123,9 @@ var PLAYERS = [
   {name:"Ishan Kishan",role:"WK",origin:"IND",iplTeam:"SRH",franchise:"Hersh"},
   {name:"Ishant Sharma",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Jack Edwards",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
-  {name:"Jacob Bethell",role:"AR",origin:"OVS",iplTeam:"RCB",franchise:"Hersh"},
-  {name:"Jacob Duffy",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:""},
-  {name:"Jamie Overton",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
+  {name:"Jacob Bethell",role:"AR",origin:"OVS",iplTeam:"RCB",franchise:""},
+  {name:"Jacob Duffy",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:"Bhavya"},
+  {name:"Jamie Overton",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:"Karan"},
   {name:"Jason Holder",role:"AR",origin:"OVS",iplTeam:"GT",franchise:"Hersh"},
   {name:"Jasprit Bumrah",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:"Karan"},
   {name:"Jayant Yadav",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1107,7 +1135,7 @@ var PLAYERS = [
   {name:"Jordan Cox",role:"BAT",origin:"OVS",iplTeam:"RCB",franchise:""},
   {name:"Jos Buttler",role:"WK",origin:"OVS",iplTeam:"GT",franchise:"Prajin"},
   {name:"Josh Hazlewood",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:"Sanket"},
-  {name:"Josh Inglis",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:"Jash"},
+  {name:"Josh Inglis",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Kagiso Rabada",role:"BOWL",origin:"OVS",iplTeam:"GT",franchise:"Darshil"},
   {name:"Kamindu Mendis",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Kanishk Chouhan",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
@@ -1124,10 +1152,10 @@ var PLAYERS = [
   {name:"Kwena Maphaka",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:""},
   {name:"Kyle Jamieson",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Lhuan-dre Pretorius",role:"WK",origin:"OVS",iplTeam:"RR",franchise:""},
-  {name:"Liam Livingstone",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:"Karan"},
+  {name:"Liam Livingstone",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Lockie Ferguson",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Luke Wood",role:"BOWL",origin:"OVS",iplTeam:"GT",franchise:""},
-  {name:"Lungi Ngidi",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:""},
+  {name:"Lungi Ngidi",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:"Jash"},
   {name:"M Shahrukh Khan",role:"BAT",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Madhav Tiwari",role:"AR",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Manav Suthar",role:"AR",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1136,7 +1164,7 @@ var PLAYERS = [
   {name:"Manish Pandey",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Marco Jansen",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Prajin"},
   {name:"Marcus Stoinis",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Darshil"},
-  {name:"Matheesha Pathirana",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:"Jash"},
+  {name:"Matheesha Pathirana",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Matt Henry",role:"BOWL",origin:"OVS",iplTeam:"CSK",franchise:"Jash"},
   {name:"Matthew Breetzke",role:"BAT",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Matthew Short",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
@@ -1145,12 +1173,12 @@ var PLAYERS = [
   {name:"Mayank Yadav",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
   {name:"Mitchell Marsh",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:"Sanket"},
   {name:"Mitchell Owen",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
-  {name:"Mitchell Santner",role:"AR",origin:"OVS",iplTeam:"MI",franchise:""},
+  {name:"Mitchell Santner",role:"AR",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
   {name:"Mitchell Starc",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:"Jash"},
   {name:"Mohammed Shami",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Bhavya"},
   {name:"Mohammed Siraj",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:"Darshil"},
   {name:"Mohd Izhar",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
-  {name:"Mohsin Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
+  {name:"Mohsin Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Prajin"},
   {name:"MS Dhoni",role:"WK",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Mukesh Choudhary",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Mukesh Kumar",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:"Prajin"},
@@ -1158,7 +1186,7 @@ var PLAYERS = [
   {name:"Musheer Khan",role:"AR",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Naman Dhir",role:"AR",origin:"IND",iplTeam:"MI",franchise:"Bhavya"},
   {name:"Naman Tiwari",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
-  {name:"Nandre Burger",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:""},
+  {name:"Nandre Burger",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:"Bhavya"},
   {name:"Nathan Ellis",role:"BOWL",origin:"OVS",iplTeam:"CSK",franchise:""},
   {name:"Nehal Wadhera",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:"Sanket"},
   {name:"Nicholas Pooran",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:"Sanket"},
@@ -1182,11 +1210,11 @@ var PLAYERS = [
   {name:"Prithvi Shaw",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Priyansh Arya",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:"Sanket"},
   {name:"Pyla Avinash",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:""},
-  {name:"Quinton de Kock",role:"WK",origin:"OVS",iplTeam:"MI",franchise:"Darshil"},
+  {name:"Quinton de Kock",role:"WK",origin:"OVS",iplTeam:"MI",franchise:""},
   {name:"Rachin Ravindra",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Raghu Sharma",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Rahul Chahar",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
-  {name:"Rahul Tewatia",role:"BAT",origin:"IND",iplTeam:"GT",franchise:"Karan"},
+  {name:"Rahul Tewatia",role:"BAT",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Rahul Tripathi",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Raj Bawa",role:"AR",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Rajat Patidar",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Prajin"},
@@ -1208,12 +1236,12 @@ var PLAYERS = [
   {name:"Ruturaj Gaikwad",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:"Sanket"},
   {name:"Ryan Rickelton",role:"WK",origin:"OVS",iplTeam:"MI",franchise:"Prajin"},
   {name:"Sahil Parakh",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
-  {name:"Sai Kishore",role:"AR",origin:"IND",iplTeam:"GT",franchise:"Hersh"},
+  {name:"Sai Kishore",role:"AR",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Sai Sudharsan",role:"BAT",origin:"IND",iplTeam:"GT",franchise:"Hersh"},
   {name:"Sakib Hussain",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
   {name:"Salil Arora",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:""},
-  {name:"Sam Curran",role:"AR",origin:"OVS",iplTeam:"RR",franchise:"Darshil"},
-  {name:"Sameer Rizvi",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
+  {name:"Sam Curran",role:"AR",origin:"OVS",iplTeam:"RR",franchise:""},
+  {name:"Sameer Rizvi",role:"BAT",origin:"IND",iplTeam:"DC",franchise:"Karan"},
   {name:"Sandeep Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:"Hersh"},
   {name:"Sanju Samson",role:"WK",origin:"IND",iplTeam:"CSK",franchise:"Hersh"},
   {name:"Sarfaraz Khan",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:""},
@@ -1237,17 +1265,17 @@ var PLAYERS = [
   {name:"Sushant Mishra",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Suyash Sharma",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Swapnil Singh",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
-  {name:"T Natarajan",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:""},
+  {name:"T Natarajan",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:"Karan"},
   {name:"Tejasvi Dahiya",role:"WK",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Tilak Varma",role:"BAT",origin:"IND",iplTeam:"MI",franchise:"Karan"},
   {name:"Tim David",role:"BAT",origin:"OVS",iplTeam:"RCB",franchise:""},
-  {name:"Tim Seifert",role:"WK",origin:"OVS",iplTeam:"KKR",franchise:"Jash"},
+  {name:"Tim Seifert",role:"WK",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Tom Banton",role:"BAT",origin:"OVS",iplTeam:"GT",franchise:""},
   {name:"Travis Head",role:"BAT",origin:"OVS",iplTeam:"SRH",franchise:"Darshil"},
   {name:"Trent Boult",role:"BOWL",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
   {name:"Tripurana Vijay",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Tristan Stubbs",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:"Bhavya"},
-  {name:"Tushar Deshpande",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:"Bhavya"},
+  {name:"Tushar Deshpande",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Umran Malik",role:"BOWL",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Urvil Patel",role:"WK",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Vaibhav Arora",role:"BOWL",origin:"IND",iplTeam:"KKR",franchise:"Hersh"},
@@ -1257,23 +1285,23 @@ var PLAYERS = [
   {name:"Vicky Ostwal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Vignesh Puthur",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Vihaan Malhotra",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
-  {name:"Vijaykumar Vyshak",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
-  {name:"Vipraj Nigam",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Darshil"},
+  {name:"Vijaykumar Vyshak",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:"Karan"},
+  {name:"Vipraj Nigam",role:"AR",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Virat Kohli",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Bhavya"},
   {name:"Vishal Nishad",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Vishnu Vinod",role:"WK",origin:"IND",iplTeam:"PBKS",franchise:""},
-  {name:"Wanindu Hasaranga",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:"Karan"},
+  {name:"Wanindu Hasaranga",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Washington Sundar",role:"AR",origin:"IND",iplTeam:"GT",franchise:"Karan"},
   {name:"Will Jacks",role:"AR",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
-  {name:"Xavier Bartlett",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
-  {name:"Yash Dayal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Prajin"},
+  {name:"Xavier Bartlett",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:"Darshil"},
+  {name:"Yash Dayal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Yash Raj Punja",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Yash Thakur",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Yashasvi Jaiswal",role:"BAT",origin:"IND",iplTeam:"RR",franchise:"Darshil"},
   {name:"Yudhvir Singh",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Yuzvendra Chahal",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:"Bhavya"},
   {name:"Zak Foulkes",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
-  {name:"Zeeshan Ansari",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:"Bhavya"}
+  {name:"Zeeshan Ansari",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""}
 ];
 
 var SCHEDULE = [
@@ -1760,7 +1788,7 @@ function renderSchedule() {
 
 
 // ---- POINTS REPORT ----
-var POINTS_DATA = [{"player": "Ishan Kishan", "role": "WK", "type": "IND", "team": "SRH", "franchise": "Hersh", "match": "RCB vs SRH", "matchNo": 1, "points": 134}, {"player": "Devdutt Padikkal", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Karan", "match": "RCB vs SRH", "matchNo": 1, "points": 133}, {"player": "Virat Kohli", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Bhavya", "match": "RCB vs SRH", "matchNo": 1, "points": 121}, {"player": "Jacob Duffy", "role": "BOWL", "type": "OVS", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 96}, {"player": "Romario Shepherd", "role": "AR", "type": "OVS", "team": "RCB", "franchise": "Bhavya", "match": "RCB vs SRH", "matchNo": 1, "points": 78}, {"player": "Aniket Verma", "role": "BAT", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 75}, {"player": "Heinrich Klaasen", "role": "WK", "type": "OVS", "team": "SRH", "franchise": "Prajin", "match": "RCB vs SRH", "matchNo": 1, "points": 61}, {"player": "David Payne", "role": "BOWL", "type": "OVS", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 57}, {"player": "Rajat Patidar", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Prajin", "match": "RCB vs SRH", "matchNo": 1, "points": 57}, {"player": "Jaydev Unadkat", "role": "BOWL", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 43}, {"player": "Phil Salt", "role": "WK", "type": "OVS", "team": "RCB", "franchise": "Darshil", "match": "RCB vs SRH", "matchNo": 1, "points": 40}, {"player": "Harsh Dubey", "role": "BOWL", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 36}, {"player": "Abhinandan Singh", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 34}, {"player": "Bhuvneshwar Kumar", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "Hersh", "match": "RCB vs SRH", "matchNo": 1, "points": 34}, {"player": "Suyash Sharma", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 31}, {"player": "Tim David", "role": "BAT", "type": "OVS", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 26}, {"player": "Travis Head", "role": "BAT", "type": "OVS", "team": "SRH", "franchise": "Darshil", "match": "RCB vs SRH", "matchNo": 1, "points": 15}, {"player": "Salil Arora", "role": "BAT", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 13}, {"player": "Abhishek Sharma", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": 11}, {"player": "Jitesh Sharma", "role": "WK", "type": "IND", "team": "RCB", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": 6}, {"player": "Nitish Kumar Reddy", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Karan", "match": "RCB vs SRH", "matchNo": 1, "points": 6}, {"player": "Eshan Malinga", "role": "BOWL", "type": "OVS", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": -3}, {"player": "Harshal Patel", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Sanket", "match": "RCB vs SRH", "matchNo": 1, "points": -5}, {"player": "Krunal Pandya", "role": "AR", "type": "IND", "team": "RCB", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": -5}, {"player": "Ryan Rickelton", "role": "WK", "type": "OVS", "team": "MI", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 139}, {"player": "Rohit Sharma", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Sanket", "match": "MI vs KKR", "matchNo": 2, "points": 132}, {"player": "Ajinkya Rahane", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 105}, {"player": "Shardul Thakur", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "Darshil", "match": "MI vs KKR", "matchNo": 2, "points": 86}, {"player": "Angkrish Raghuvanshi", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Sanket", "match": "MI vs KKR", "matchNo": 2, "points": 85}, {"player": "Finn Allen", "role": "BAT", "type": "OVS", "team": "KKR", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 67}, {"player": "Hardik Pandya", "role": "AR", "type": "IND", "team": "MI", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 62}, {"player": "Rinku Singh", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Bhavya", "match": "MI vs KKR", "matchNo": 2, "points": 57}, {"player": "Tilak Varma", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 48}, {"player": "Kartik Tyagi", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 32}, {"player": "Cameron Green", "role": "AR", "type": "OVS", "team": "KKR", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 30}, {"player": "Sunil Narine", "role": "AR", "type": "OVS", "team": "KKR", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 29}, {"player": "Vaibhav Arora", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "Hersh", "match": "MI vs KKR", "matchNo": 2, "points": 27}, {"player": "Suryakumar Yadav", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 22}, {"player": "Anukul Roy", "role": "AR", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 21}, {"player": "Manish Pandey", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 8}, {"player": "Sherfane Rutherford", "role": "BAT", "type": "OVS", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 8}, {"player": "Naman Dhir", "role": "AR", "type": "IND", "team": "MI", "franchise": "Bhavya", "match": "MI vs KKR", "matchNo": 2, "points": 7}, {"player": "Trent Boult", "role": "BOWL", "type": "OVS", "team": "MI", "franchise": "Hersh", "match": "MI vs KKR", "matchNo": 2, "points": 7}, {"player": "Jasprit Bumrah", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 4}, {"player": "Ramandeep Singh", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 4}, {"player": "Blessing Muzarabani", "role": "BOWL", "type": "OVS", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 2}, {"player": "Mayank Markande", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 1}, {"player": "Varun Chakravarthy", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "Jash", "match": "MI vs KKR", "matchNo": 2, "points": 1}, {"player": "AM Ghazanfar", "role": "BOWL", "type": "OVS", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 0}, {"player": "Vaibhav Sooryavanshi", "role": "BAT", "type": "IND", "team": "RR", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 94}, {"player": "Jofra Archer", "role": "BOWL", "type": "OVS", "team": "RR", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": 81}, {"player": "Anshul Kamboj", "role": "BOWL", "type": "IND", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 75}, {"player": "Nandre Burger", "role": "BOWL", "type": "OVS", "team": "RR", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 74}, {"player": "Ravindra Jadeja", "role": "AR", "type": "IND", "team": "RR", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 71}, {"player": "Jamie Overton", "role": "AR", "type": "OVS", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 60}, {"player": "Yashasvi Jaiswal", "role": "BAT", "type": "IND", "team": "RR", "franchise": "Darshil", "match": "RR vs CSK", "matchNo": 3, "points": 60}, {"player": "Ravi Bishnoi", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "Darshil", "match": "RR vs CSK", "matchNo": 3, "points": 53}, {"player": "Dhruv Jurel", "role": "WK", "type": "IND", "team": "RR", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 48}, {"player": "Brijesh Sharma", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 47}, {"player": "Sarfaraz Khan", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 35}, {"player": "Sandeep Sharma", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 28}, {"player": "Kartik Sharma", "role": "WK", "type": "IND", "team": "CSK", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 22}, {"player": "Riyan Parag", "role": "AR", "type": "IND", "team": "RR", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 20}, {"player": "Khaleel Ahmed", "role": "BOWL", "type": "IND", "team": "CSK", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 14}, {"player": "Shivam Dube", "role": "AR", "type": "IND", "team": "CSK", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 10}, {"player": "Sanju Samson", "role": "WK", "type": "IND", "team": "CSK", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 8}, {"player": "Shimron Hetmyer", "role": "BAT", "type": "OVS", "team": "RR", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 6}, {"player": "Ruturaj Gaikwad", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 4}, {"player": "Matt Henry", "role": "BOWL", "type": "OVS", "team": "CSK", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": 3}, {"player": "Matthew Short", "role": "AR", "type": "OVS", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 2}, {"player": "Noor Ahmad", "role": "BOWL", "type": "OVS", "team": "CSK", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 1}, {"player": "Ayush Mhatre", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": -2}];
+var POINTS_DATA = [{"player": "Ishan Kishan", "role": "WK", "type": "IND", "team": "SRH", "franchise": "Hersh", "match": "RCB vs SRH", "matchNo": 1, "points": 134}, {"player": "Devdutt Padikkal", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Karan", "match": "RCB vs SRH", "matchNo": 1, "points": 133}, {"player": "Virat Kohli", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Bhavya", "match": "RCB vs SRH", "matchNo": 1, "points": 121}, {"player": "Jacob Duffy", "role": "BOWL", "type": "OVS", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 96}, {"player": "Romario Shepherd", "role": "AR", "type": "OVS", "team": "RCB", "franchise": "Bhavya", "match": "RCB vs SRH", "matchNo": 1, "points": 78}, {"player": "Aniket Verma", "role": "BAT", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 75}, {"player": "Heinrich Klaasen", "role": "WK", "type": "OVS", "team": "SRH", "franchise": "Prajin", "match": "RCB vs SRH", "matchNo": 1, "points": 61}, {"player": "David Payne", "role": "BOWL", "type": "OVS", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 57}, {"player": "Rajat Patidar", "role": "BAT", "type": "IND", "team": "RCB", "franchise": "Prajin", "match": "RCB vs SRH", "matchNo": 1, "points": 57}, {"player": "Jaydev Unadkat", "role": "BOWL", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 43}, {"player": "Phil Salt", "role": "WK", "type": "OVS", "team": "RCB", "franchise": "Darshil", "match": "RCB vs SRH", "matchNo": 1, "points": 40}, {"player": "Harsh Dubey", "role": "BOWL", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 36}, {"player": "Abhinandan Singh", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 34}, {"player": "Bhuvneshwar Kumar", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "Hersh", "match": "RCB vs SRH", "matchNo": 1, "points": 34}, {"player": "Suyash Sharma", "role": "BOWL", "type": "IND", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 31}, {"player": "Tim David", "role": "BAT", "type": "OVS", "team": "RCB", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 26}, {"player": "Travis Head", "role": "BAT", "type": "OVS", "team": "SRH", "franchise": "Darshil", "match": "RCB vs SRH", "matchNo": 1, "points": 15}, {"player": "Salil Arora", "role": "BAT", "type": "IND", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": 13}, {"player": "Abhishek Sharma", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": 11}, {"player": "Jitesh Sharma", "role": "WK", "type": "IND", "team": "RCB", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": 6}, {"player": "Nitish Kumar Reddy", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Karan", "match": "RCB vs SRH", "matchNo": 1, "points": 6}, {"player": "Eshan Malinga", "role": "BOWL", "type": "OVS", "team": "SRH", "franchise": "-", "match": "RCB vs SRH", "matchNo": 1, "points": -3}, {"player": "Harshal Patel", "role": "AR", "type": "IND", "team": "SRH", "franchise": "Sanket", "match": "RCB vs SRH", "matchNo": 1, "points": -5}, {"player": "Krunal Pandya", "role": "AR", "type": "IND", "team": "RCB", "franchise": "Jash", "match": "RCB vs SRH", "matchNo": 1, "points": -5}, {"player": "Ryan Rickelton", "role": "WK", "type": "OVS", "team": "MI", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 139}, {"player": "Rohit Sharma", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Sanket", "match": "MI vs KKR", "matchNo": 2, "points": 132}, {"player": "Ajinkya Rahane", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 105}, {"player": "Shardul Thakur", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "Darshil", "match": "MI vs KKR", "matchNo": 2, "points": 86}, {"player": "Angkrish Raghuvanshi", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Sanket", "match": "MI vs KKR", "matchNo": 2, "points": 85}, {"player": "Finn Allen", "role": "BAT", "type": "OVS", "team": "KKR", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 67}, {"player": "Hardik Pandya", "role": "AR", "type": "IND", "team": "MI", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 62}, {"player": "Rinku Singh", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "Bhavya", "match": "MI vs KKR", "matchNo": 2, "points": 57}, {"player": "Tilak Varma", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 48}, {"player": "Kartik Tyagi", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 32}, {"player": "Cameron Green", "role": "AR", "type": "OVS", "team": "KKR", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 30}, {"player": "Sunil Narine", "role": "AR", "type": "OVS", "team": "KKR", "franchise": "Prajin", "match": "MI vs KKR", "matchNo": 2, "points": 29}, {"player": "Vaibhav Arora", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "Hersh", "match": "MI vs KKR", "matchNo": 2, "points": 27}, {"player": "Suryakumar Yadav", "role": "BAT", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 22}, {"player": "Anukul Roy", "role": "AR", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 21}, {"player": "Manish Pandey", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 8}, {"player": "Sherfane Rutherford", "role": "BAT", "type": "OVS", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 8}, {"player": "Naman Dhir", "role": "AR", "type": "IND", "team": "MI", "franchise": "Bhavya", "match": "MI vs KKR", "matchNo": 2, "points": 7}, {"player": "Trent Boult", "role": "BOWL", "type": "OVS", "team": "MI", "franchise": "Hersh", "match": "MI vs KKR", "matchNo": 2, "points": 7}, {"player": "Jasprit Bumrah", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "Karan", "match": "MI vs KKR", "matchNo": 2, "points": 4}, {"player": "Ramandeep Singh", "role": "BAT", "type": "IND", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 4}, {"player": "Blessing Muzarabani", "role": "BOWL", "type": "OVS", "team": "KKR", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 2}, {"player": "Mayank Markande", "role": "BOWL", "type": "IND", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 1}, {"player": "Varun Chakravarthy", "role": "BOWL", "type": "IND", "team": "KKR", "franchise": "Jash", "match": "MI vs KKR", "matchNo": 2, "points": 1}, {"player": "AM Ghazanfar", "role": "BOWL", "type": "OVS", "team": "MI", "franchise": "-", "match": "MI vs KKR", "matchNo": 2, "points": 0}, {"player": "Vaibhav Sooryavanshi", "role": "BAT", "type": "IND", "team": "RR", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 94}, {"player": "Jofra Archer", "role": "BOWL", "type": "OVS", "team": "RR", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": 81}, {"player": "Anshul Kamboj", "role": "BOWL", "type": "IND", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 75}, {"player": "Nandre Burger", "role": "BOWL", "type": "OVS", "team": "RR", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 74}, {"player": "Ravindra Jadeja", "role": "AR", "type": "IND", "team": "RR", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 71}, {"player": "Jamie Overton", "role": "AR", "type": "OVS", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 60}, {"player": "Yashasvi Jaiswal", "role": "BAT", "type": "IND", "team": "RR", "franchise": "Darshil", "match": "RR vs CSK", "matchNo": 3, "points": 60}, {"player": "Ravi Bishnoi", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "Darshil", "match": "RR vs CSK", "matchNo": 3, "points": 53}, {"player": "Dhruv Jurel", "role": "WK", "type": "IND", "team": "RR", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 48}, {"player": "Brijesh Sharma", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 47}, {"player": "Sarfaraz Khan", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 35}, {"player": "Sandeep Sharma", "role": "BOWL", "type": "IND", "team": "RR", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 28}, {"player": "Kartik Sharma", "role": "WK", "type": "IND", "team": "CSK", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 22}, {"player": "Riyan Parag", "role": "AR", "type": "IND", "team": "RR", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 20}, {"player": "Khaleel Ahmed", "role": "BOWL", "type": "IND", "team": "CSK", "franchise": "Prajin", "match": "RR vs CSK", "matchNo": 3, "points": 14}, {"player": "Shivam Dube", "role": "AR", "type": "IND", "team": "CSK", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 10}, {"player": "Sanju Samson", "role": "WK", "type": "IND", "team": "CSK", "franchise": "Hersh", "match": "RR vs CSK", "matchNo": 3, "points": 8}, {"player": "Shimron Hetmyer", "role": "BAT", "type": "OVS", "team": "RR", "franchise": "Bhavya", "match": "RR vs CSK", "matchNo": 3, "points": 6}, {"player": "Ruturaj Gaikwad", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 4}, {"player": "Matt Henry", "role": "BOWL", "type": "OVS", "team": "CSK", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": 3}, {"player": "Matthew Short", "role": "AR", "type": "OVS", "team": "CSK", "franchise": "-", "match": "RR vs CSK", "matchNo": 3, "points": 2}, {"player": "Noor Ahmad", "role": "BOWL", "type": "OVS", "team": "CSK", "franchise": "Sanket", "match": "RR vs CSK", "matchNo": 3, "points": 1}, {"player": "Ayush Mhatre", "role": "BAT", "type": "IND", "team": "CSK", "franchise": "Jash", "match": "RR vs CSK", "matchNo": 3, "points": -2}, {"player": "Sai Sudharsan", "role": "BAT", "team": "GT", "franchise": "Hersh", "match": "PBKS vs GT", "matchNo": 4, "points": 17, "type": "IND"}, {"player": "Shubman Gill", "role": "BAT", "team": "GT", "franchise": "Bhavya", "match": "PBKS vs GT", "matchNo": 4, "points": 73, "type": "IND"}, {"player": "Jos Buttler", "role": "WK", "team": "GT", "franchise": "Prajin", "match": "PBKS vs GT", "matchNo": 4, "points": 64, "type": "OVS"}, {"player": "Glenn Phillips", "role": "AR", "team": "GT", "franchise": "Jash", "match": "PBKS vs GT", "matchNo": 4, "points": 33, "type": "OVS"}, {"player": "Washington Sundar", "role": "AR", "team": "GT", "franchise": "Karan", "match": "PBKS vs GT", "matchNo": 4, "points": 61, "type": "IND"}, {"player": "M Shahrukh Khan", "role": "BAT", "team": "GT", "franchise": "-", "match": "PBKS vs GT", "matchNo": 4, "points": 4, "type": "IND"}, {"player": "Rahul Tewatia", "role": "BAT", "team": "GT", "franchise": "Karan", "match": "PBKS vs GT", "matchNo": 4, "points": 13, "type": "IND"}, {"player": "Rashid Khan", "role": "AR", "team": "GT", "franchise": "Sanket", "match": "PBKS vs GT", "matchNo": 4, "points": 41, "type": "OVS"}, {"player": "Priyansh Arya", "role": "BAT", "team": "PBKS", "franchise": "Sanket", "match": "PBKS vs GT", "matchNo": 4, "points": 11, "type": "IND"}, {"player": "Prabhsimran Singh", "role": "WK", "team": "PBKS", "franchise": "Sanket", "match": "PBKS vs GT", "matchNo": 4, "points": 63, "type": "IND"}, {"player": "Cooper Connolly", "role": "AR", "team": "PBKS", "franchise": "-", "match": "PBKS vs GT", "matchNo": 4, "points": 122, "type": "OVS"}, {"player": "Shreyas Iyer", "role": "BAT", "team": "PBKS", "franchise": "Karan", "match": "PBKS vs GT", "matchNo": 4, "points": 38, "type": "IND"}, {"player": "Nehal Wadhera", "role": "BAT", "team": "PBKS", "franchise": "Sanket", "match": "PBKS vs GT", "matchNo": 4, "points": 3, "type": "IND"}, {"player": "Shashank Singh", "role": "BAT", "team": "PBKS", "franchise": "Jash", "match": "PBKS vs GT", "matchNo": 4, "points": 4, "type": "IND"}, {"player": "Marcus Stoinis", "role": "AR", "team": "PBKS", "franchise": "Darshil", "match": "PBKS vs GT", "matchNo": 4, "points": -2, "type": "OVS"}, {"player": "Marco Jansen", "role": "AR", "team": "PBKS", "franchise": "Prajin", "match": "PBKS vs GT", "matchNo": 4, "points": 58, "type": "OVS"}, {"player": "Xavier Bartlett", "role": "BOWL", "team": "PBKS", "franchise": "-", "match": "PBKS vs GT", "matchNo": 4, "points": 32, "type": "OVS"}, {"player": "Ashok Sharma", "role": "BOWL", "team": "GT", "franchise": "-", "match": "PBKS vs GT", "matchNo": 4, "points": 39, "type": "IND"}, {"player": "Prasidh Krishna", "role": "BOWL", "team": "GT", "franchise": "Jash", "match": "PBKS vs GT", "matchNo": 4, "points": 98, "type": "IND"}, {"player": "Arshdeep Singh", "role": "BOWL", "team": "PBKS", "franchise": "Hersh", "match": "PBKS vs GT", "matchNo": 4, "points": 23, "type": "IND"}, {"player": "Mohammed Siraj", "role": "BOWL", "team": "GT", "franchise": "Darshil", "match": "PBKS vs GT", "matchNo": 4, "points": 6, "type": "IND"}, {"player": "Kagiso Rabada", "role": "BOWL", "team": "GT", "franchise": "Darshil", "match": "PBKS vs GT", "matchNo": 4, "points": 28, "type": "OVS"}, {"player": "Vijaykumar Vyshak", "role": "BOWL", "team": "PBKS", "franchise": "-", "match": "PBKS vs GT", "matchNo": 4, "points": 87, "type": "IND"}, {"player": "Yuzvendra Chahal", "role": "BOWL", "team": "PBKS", "franchise": "Bhavya", "match": "PBKS vs GT", "matchNo": 4, "points": 59, "type": "IND"}];
 var pointsFiltersReady = false;
 
 function initPointsReport() {
@@ -2416,6 +2444,7 @@ function renderWaiverOpenPage(){
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
   var html = '';
+  html += (typeof renderMasterAllBudgetsBox==='function' ? renderMasterAllBudgetsBox() : '');
   html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
   html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
@@ -2455,32 +2484,43 @@ function renderWaiverMyBidsPage(){
     var rows = waiverSortBids(w.bids || []).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+(b.franchise===current?' (you)':'')+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(winner && winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join('');
     return '<div class="waiver-completed-card"><div class="waiver-completed-top"><div class="waiver-player-line"><div class="waiver-avatar">'+initials(w.playerName)+'</div><div><div class="waiver-player-name">'+escapeHtml(w.playerName)+'</div><div style="font-size:14px;color:var(--text2);">My bid: '+formatCompactINR(bid.amount)+'</div><div style="font-size:14px;color:var(--text2);margin-top:8px;">Transfer out: '+escapeHtml(bid.dropPlayer)+' ('+escapeHtml(p.role || '')+')</div></div></div><div>'+titleStatus+'</div></div>'+
     (won && w.status==='completed' ? '<div class="waiver-success-bar">Added to your squad on '+ humanTime(w.completedAt) +'</div>' : '') +
-    '<button class="waiver-toggle-link" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)" data-waiver-history-id="\'"+escapeAttr(w.id"\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'">Show bids</span></button>'+
+    '<button class="waiver-toggle-link" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'">Show bids</span></button>'+
     '<div id="waiverHist-'+escapeAttr(w.id)+'" style="display:none;"><div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+rows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></div></div>';
   }
   if (completed.length) html += '<div style="font-size:12px;letter-spacing:.12em;color:var(--text2);font-weight:800;text-transform:uppercase;margin:0 0 12px;">Completed ('+completed.length+')</div>' + completed.map(cardFor).join('');
   if (active.length) html += '<div style="font-size:12px;letter-spacing:.12em;color:var(--text2);font-weight:800;text-transform:uppercase;margin:16px 0 12px;">Active ('+active.length+')</div>' + active.map(cardFor).join('');
   root.innerHTML = html;
 }
-
 function toggleWaiverHistory(id){
-  var row = document.getElementById('waiverHist-'+id);
-  var label = document.getElementById('waiverHistLabel-'+id);
-  if(!row){
-    return;
-  }
-  var currentlyOpen = row.getAttribute('data-open') === '1' || row.style.display === 'table-row';
-  if(currentlyOpen){
-    row.style.display = 'none';
-    row.setAttribute('data-open','0');
+  var el = document.getElementById('waiverHist-'+id),
+      label = document.getElementById('waiverHistLabel-'+id);
+  if(!el) return;
+
+  var isRow = (el.tagName || '').toLowerCase() === 'tr';
+  var open = el.style.display && el.style.display !== 'none';
+
+  if(open){
+    el.style.display = 'none';
     if(label) label.textContent = 'Show bids';
   }else{
-    row.style.display = 'table-row';
-    row.setAttribute('data-open','1');
+    el.style.display = isRow ? 'table-row' : 'block';
     if(label) label.textContent = 'Hide bids';
   }
 }
-
+function renderWaiverTransfersPage(){
+  var root = document.getElementById('waiverTransfersRoot'); if (!root) return;
+  var completed = (waiverState.waivers||[]).filter(function(w){ return w.status === 'completed'; });
+  var current = getCurrentWaiverFranchise();
+  var html = '<div class="waiver-toolbar"><div><div class="panel-title" style="margin-bottom:8px;">All Transfers</div><div style="font-size:13px;color:var(--text2);">'+completed.length+' completed transfers</div></div><div class="waiver-filter-bar" style="margin:0;padding:0;border:none;background:none;"><select onchange="setCurrentWaiverFranchise(this.value)">'+waiverFranchiseOptions(current)+'</select></div></div>';
+  if (!completed.length) { html += '<div class="waiver-empty"><div class="icon">&#8646;</div><h3>No transfers yet</h3><p>Completed waivers will appear here.</p></div>'; root.innerHTML = html; return; }
+  html += '<div class="waiver-filter-bar"><select id="waiverTransferFilterFranchise" onchange="renderWaiverTransfersPage()"><option value="ALL">All Franchises</option>'+FRANCHISES.map(function(f){ return '<option value="'+escapeAttr(f)+'">'+escapeHtml(f)+'</option>'; }).join('')+'</select><select id="waiverTransferFilterRole" onchange="renderWaiverTransfersPage()"><option value="ALL">All Roles</option><option>BAT</option><option>BOWL</option><option>WK</option><option>AR</option></select><select id="waiverTransferFilterTeam" onchange="renderWaiverTransfersPage()"><option value="ALL">All IPL Teams</option>'+uniqueIplTeamsOptions()+'</select></div>';
+  var ff = document.getElementById('waiverTransferFilterFranchise'); var rf = document.getElementById('waiverTransferFilterRole'); var tf = document.getElementById('waiverTransferFilterTeam');
+  var franchiseFilter = ff ? ff.value : 'ALL'; var roleFilter = rf ? rf.value : 'ALL'; var teamFilter = tf ? tf.value : 'ALL';
+  var filtered = completed.filter(function(w){ var p = getPlayerByName(w.playerName) || {}; return (franchiseFilter==='ALL'||(w.winner&&w.winner.franchise===franchiseFilter)) && (roleFilter==='ALL'||p.role===roleFilter) && (teamFilter==='ALL'||p.iplTeam===teamFilter); });
+  html += '<div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Date</th><th>Franchise</th><th>Player In</th><th>Player Out</th><th>Bid</th><th>Status</th><th>Bids</th></tr></thead><tbody>' + filtered.map(function(w){ var p = getPlayerByName(w.playerName)||{}; var tieNote = computeTieNote(w); var histRows = waiverSortBids(w.bids||[]).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(w.winner&&w.winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join(''); return '<tr><td>'+humanTime(w.completedAt).split(',')[0]+'</td><td>'+escapeHtml(w.winner.franchise)+'</td><td>'+escapeHtml(w.playerName)+' · '+escapeHtml(p.iplTeam||'')+' · '+escapeHtml(p.role||'')+'</td><td>'+escapeHtml(w.winner.dropPlayer)+'</td><td class="amount">'+formatINR(w.winner.amount)+'</td><td><span class="waiver-result-pill processed">PROCESSED</span></td><td><button class="waiver-toggle-link" style="margin:0;" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"-t\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'-t">Show bids</span></button></td></tr><tr id="waiverHist-'+escapeAttr(w.id)+'-t" style="display:none;"><td colspan="7" style="padding:0;"><div class="waiver-table-wrap" style="margin:0;border:none;border-top:1px solid rgba(255,255,255,.06);border-radius:0;"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Bid Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+histRows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></td></tr>'; }).join('') + '</tbody></table></div>';
+  root.innerHTML = html;
+  if (ff) ff.value = franchiseFilter; if (rf) rf.value = roleFilter; if (tf) tf.value = teamFilter;
+}
 function uniqueIplTeamsOptions(){
   var seen={}; var arr=[]; PLAYERS.forEach(function(p){ if(!seen[p.iplTeam]){ seen[p.iplTeam]=1; arr.push(p.iplTeam); } }); arr.sort(); return arr.map(function(t){ return '<option value="'+escapeAttr(t)+'">'+escapeHtml(t)+'</option>'; }).join(''); }
 (function seedDemoWaivers(){
@@ -2946,19 +2986,8 @@ function doLogin(){
     }
   });
 
-  window.renderWaiverOpenPage = function(){
-    var root = document.getElementById('waiverOpenRoot'); if (!root) return;
-    var current = getCurrentWaiverFranchise();
-    var meta = waiverStatusMeta();
-    var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
-    var html = '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value" style="font-size:22px;">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
-    html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
-    if (!active.length) {
-      html += '<div class="waiver-empty"><div class="icon">&#8635;</div><h3>No active waivers</h3><p>Be the first to nominate a player this cycle.</p></div>';
-      root.innerHTML = html; return;
-    }
-    html += active.map(function(w){
-      var p = getPlayerByName(w.playerName) || {};
+  // removed duplicate window.renderWaiverOpenPage override
+
       var myBid = findLatestBid(w, current);
       return '<div class="waiver-card">' +
         '<div class="waiver-card-top"><div class="waiver-player-line"><div class="waiver-avatar">'+initials(w.playerName)+'</div><div><div class="waiver-player-name">'+escapeHtml(w.playerName)+'</div><div class="waiver-meta"><span class="waiver-chip '+roleChipClass(p.role || 'AR')+'">'+escapeHtml(p.role || '')+'</span><span class="waiver-chip '+typeChipClass(p.origin || 'IND')+'">'+escapeHtml(p.origin || 'IND')+'</span><span class="waiver-chip team">'+escapeHtml(p.iplTeam || '')+'</span></div></div></div>' +
@@ -3512,7 +3541,7 @@ function doLogin(){
     var closes = now + 24*60*60*1000;
 
     if (!window.waiverState) window.waiverState = { waivers: [], budgets: {} };
-    if (!Array.isArray(window.waiverState.waivers)) window.waiverState.waivers = [];
+    if (!Array.isArray(window.waiverState.waivers)) window.// disabled auto wipe of waivers;
 
     window.waiverState.waivers.unshift({
       id: 'W' + now,
@@ -3818,15 +3847,42 @@ function doLogin(){
 </script>
 
 
-<script id="show-bids-fallback-fix">
+<script id="waiver-master-budget-script">
 (function(){
-  document.addEventListener('click', function(e){
-    var btn = e.target.closest ? e.target.closest('[data-waiver-history-id]') : null;
-    if(!btn) return;
-    e.preventDefault();
-    var id = btn.getAttribute('data-waiver-history-id');
-    if(id) toggleWaiverHistory(id);
-  });
+  const ALL_FRS = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
+  function fmtInr(v){
+    try { return '₹' + Number(v || 0).toLocaleString('en-IN'); }
+    catch(e){ return '₹' + (v || 0); }
+  }
+  window.renderMasterAllBudgetsBox = function(){
+    const state = window.waiverState || window.STATE || {};
+    const budgets = {};
+    ALL_FRS.forEach(f => budgets[f] = 250000);
+
+    if (state && state.budgets && typeof state.budgets === 'object'){
+      ALL_FRS.forEach(f => {
+        if (state.budgets[f] != null) budgets[f] = Number(state.budgets[f]);
+      });
+    } else if (typeof window.getWaiverRemainingBudget === 'function'){
+      ALL_FRS.forEach(f => {
+        try { budgets[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
+      });
+    }
+
+    return `<div id="waiverAllBudgetBox" class="waiver-master-budget-wrap">
+      <div class="waiver-master-budget-title">Waiver Budget Remaining</div>
+      <div class="waiver-master-budget-sub">Visible to all franchises</div>
+      <div class="waiver-master-budget-grid">
+        ${ALL_FRS.map(f => `
+          <div class="waiver-master-budget-card">
+            <div class="waiver-master-budget-name">${f}</div>
+            <div class="waiver-master-budget-value">${fmtInr(budgets[f])}</div>
+            <div class="waiver-master-budget-foot">Remaining balance</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  };
 })();
 </script>
 
