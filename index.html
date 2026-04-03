@@ -2496,7 +2496,7 @@ function toggleWaiverHistory(id){
       label = document.getElementById('waiverHistLabel-'+id);
   if(!el) return;
   var tag = (el.tagName || '').toLowerCase();
-  var open = (el.style.display && el.style.display !== 'none');
+  var open = !!(el.style.display && el.style.display !== 'none');
   if(open){
     el.style.display = 'none';
     if(label) label.textContent = 'Show bids';
