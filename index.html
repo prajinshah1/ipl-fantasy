@@ -187,7 +187,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .waiver-result-pill.won{background:rgba(6,214,160,.16);color:#5df2c5;}.waiver-result-pill.lost{background:rgba(255,255,255,.08);color:#a7b0c8;}.waiver-result-pill.processed{background:rgba(6,214,160,.14);color:#48e8b7;}
 .waiver-success-bar{background:linear-gradient(90deg,rgba(0,230,168,.1),rgba(0,230,168,.02));border-radius:14px;padding:14px 16px;color:#62f5c9;font-size:14px;font-weight:700;margin-top:8px;}
 .waiver-toggle-link{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:#ff26f6;cursor:pointer;font-size:14px;font-weight:700;padding:0;margin:14px 0 12px;}
-.waiver-table-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;margin-bottom:14px;}
+.waiver-table-wrap{border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin-bottom:14px;}
 .waiver-table{width:100%;border-collapse:collapse;min-width:720px;}
 .waiver-table th{padding:14px 16px;background:#202b49;color:#97a2bf;text-align:left;font-size:12px;letter-spacing:.08em;text-transform:uppercase;}
 .waiver-table td{padding:14px 16px;border-top:1px solid rgba(255,255,255,.06);color:#d9e1f2;}
@@ -419,24 +419,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .fr-stat-label{font-size:12px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;}
 .fr-mini-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;}
 
-
-/* FINAL mobile table fixes */
-@media (max-width: 768px){
-  .roles-table-wrap{
-    overflow-x:auto !important;
-    -webkit-overflow-scrolling:touch;
-  }
-  .roles-table-wrap .roles-tbl{
-    min-width:720px;
-  }
-  #page-leaderboard .roles-table-wrap .roles-tbl{
-    min-width:760px;
-  }
-  #franchisePlayerPointsPage .roles-table-wrap .roles-tbl{
-    min-width:680px;
-  }
-}
-
 </style>
 
 <style id="waiver-final-tweaks">
@@ -635,63 +617,16 @@ window.__firebaseReadyPromise = (async function(){
 </script>
 
 
-<style id="waiver-premium-budget-style">
-.waiver-premium-budget-wrap{
-  margin:0 0 18px 0;
-  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:0 10px 26px rgba(0,0,0,0.18);
-}
-.waiver-premium-budget-head{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;
-}
-.waiver-premium-budget-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:14px;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--text);
-}
-.waiver-premium-budget-sub{
-  font-size:12px;color:var(--text2);
-}
-.waiver-premium-budget-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
-}
-.waiver-premium-budget-card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:16px;
-  padding:12px 12px 10px;
-}
-.waiver-premium-budget-name{
-  font-size:12px;color:var(--text2);margin-bottom:6px;
-}
-.waiver-premium-budget-value{
-  font-family:'Rajdhani',sans-serif;
-  font-size:24px;
-  line-height:1;
-  font-weight:800;
-  color:var(--gold);
-}
-.waiver-premium-budget-foot{
-  font-size:11px;color:var(--muted);margin-top:6px;
-}
+<style id="waiver-transfer-mobile-fix">
 @media(max-width:740px){
-  .waiver-premium-budget-wrap{padding:14px;}
-  .waiver-premium-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .waiver-premium-budget-value{font-size:22px;}
+  .waiver-table{min-width:880px;}
+  .waiver-table th,.waiver-table td{white-space:nowrap;}
 }
 </style>
 
 
-<style id="waiver-all-budget-style">
-.waiver-all-budget-wrap{
+<style id="waiver-master-budget-style">
+.waiver-master-budget-wrap{
   margin:0 0 18px 0;
   background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
   border:1px solid rgba(255,255,255,0.10);
@@ -699,26 +634,19 @@ window.__firebaseReadyPromise = (async function(){
   padding:16px;
   box-shadow:0 10px 26px rgba(0,0,0,0.18);
 }
-.waiver-all-budget-title{
+.waiver-master-budget-title{
   font-family:'Barlow Condensed',sans-serif;
   font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text);
   margin-bottom:4px;
 }
-.waiver-all-budget-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
-.waiver-all-budget-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;
-}
-.waiver-all-budget-card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:16px;
-  padding:12px 12px 10px;
-}
-.waiver-all-budget-name{font-size:12px;color:var(--text2);margin-bottom:6px;}
-.waiver-all-budget-value{font-family:'Rajdhani',sans-serif;font-size:24px;line-height:1;font-weight:800;color:var(--gold);}
-.waiver-all-budget-foot{font-size:11px;color:var(--muted);margin-top:6px;}
+.waiver-master-budget-sub{font-size:12px;color:var(--text2);margin-bottom:12px;}
+.waiver-master-budget-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+.waiver-master-budget-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:12px 12px 10px;}
+.waiver-master-budget-name{font-size:12px;color:var(--text2);margin-bottom:6px;}
+.waiver-master-budget-value{font-family:'Rajdhani',sans-serif;font-size:24px;line-height:1;font-weight:800;color:var(--gold);}
+.waiver-master-budget-foot{font-size:11px;color:var(--muted);margin-top:6px;}
 @media(max-width:740px){
-  .waiver-all-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .waiver-master-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 </style>
 
@@ -1142,7 +1070,7 @@ var PLAYERS = [
   {name:"Angkrish Raghuvanshi",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:"Sanket"},
   {name:"Aniket Verma",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:"Jash"},
   {name:"Anrich Nortje",role:"BOWL",origin:"OVS",iplTeam:"LSG",franchise:""},
-  {name:"Anshul Kamboj",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
+  {name:"Anshul Kamboj",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:"Darshil"},
   {name:"Anuj Rawat",role:"WK",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Anukul Roy",role:"AR",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Arjun Tendulkar",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
@@ -1162,7 +1090,7 @@ var PLAYERS = [
   {name:"Ben Duckett",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Ben Dwarshuis",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Bhuvneshwar Kumar",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Hersh"},
-  {name:"Blessing Muzarabani",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:""},
+  {name:"Blessing Muzarabani",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:"Darshil"},
   {name:"Brijesh Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Brydon Carse",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Cameron Green",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Karan"},
@@ -1197,7 +1125,7 @@ var PLAYERS = [
   {name:"Jack Edwards",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Jacob Bethell",role:"AR",origin:"OVS",iplTeam:"RCB",franchise:""},
   {name:"Jacob Duffy",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:"Bhavya"},
-  {name:"Jamie Overton",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
+  {name:"Jamie Overton",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:"Karan"},
   {name:"Jason Holder",role:"AR",origin:"OVS",iplTeam:"GT",franchise:"Hersh"},
   {name:"Jasprit Bumrah",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:"Karan"},
   {name:"Jayant Yadav",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1224,7 +1152,7 @@ var PLAYERS = [
   {name:"Kwena Maphaka",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:""},
   {name:"Kyle Jamieson",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Lhuan-dre Pretorius",role:"WK",origin:"OVS",iplTeam:"RR",franchise:""},
-  {name:"Liam Livingstone",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:"Karan"},
+  {name:"Liam Livingstone",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Lockie Ferguson",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Luke Wood",role:"BOWL",origin:"OVS",iplTeam:"GT",franchise:""},
   {name:"Lungi Ngidi",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:"Jash"},
@@ -1282,8 +1210,8 @@ var PLAYERS = [
   {name:"Prithvi Shaw",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Priyansh Arya",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:"Sanket"},
   {name:"Pyla Avinash",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:""},
-  {name:"Quinton de Kock",role:"WK",origin:"OVS",iplTeam:"MI",franchise:"Darshil"},
-  {name:"Rachin Ravindra",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Darshil"},
+  {name:"Quinton de Kock",role:"WK",origin:"OVS",iplTeam:"MI",franchise:""},
+  {name:"Rachin Ravindra",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Raghu Sharma",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Rahul Chahar",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Rahul Tewatia",role:"BAT",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1358,14 +1286,14 @@ var PLAYERS = [
   {name:"Vignesh Puthur",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Vihaan Malhotra",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Vijaykumar Vyshak",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:"Karan"},
-  {name:"Vipraj Nigam",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Darshil"},
+  {name:"Vipraj Nigam",role:"AR",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Virat Kohli",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Bhavya"},
   {name:"Vishal Nishad",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Vishnu Vinod",role:"WK",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Wanindu Hasaranga",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Washington Sundar",role:"AR",origin:"IND",iplTeam:"GT",franchise:"Karan"},
   {name:"Will Jacks",role:"AR",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
-  {name:"Xavier Bartlett",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
+  {name:"Xavier Bartlett",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:"Darshil"},
   {name:"Yash Dayal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Yash Raj Punja",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Yash Thakur",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
@@ -2516,8 +2444,7 @@ function renderWaiverOpenPage(){
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
   var html = '';
-  html += (typeof renderAllFranchiseBudgetsBox==='function' ? renderAllFranchiseBudgetsBox() : '');
-  html += (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '');
+  html += (typeof renderMasterAllBudgetsBox==='function' ? renderMasterAllBudgetsBox() : '');
   html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
   html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
@@ -2564,7 +2491,14 @@ function renderWaiverMyBidsPage(){
   if (active.length) html += '<div style="font-size:12px;letter-spacing:.12em;color:var(--text2);font-weight:800;text-transform:uppercase;margin:16px 0 12px;">Active ('+active.length+')</div>' + active.map(cardFor).join('');
   root.innerHTML = html;
 }
-function toggleWaiverHistory(id){ var el=document.getElementById('waiverHist-'+id), label=document.getElementById('waiverHistLabel-'+id); if(!el) return; var open=el.style.display==='block'; el.style.display=open?'none':'block'; if(label) label.textContent=open?'Show bids':'Hide bids'; }
+function toggleWaiverHistory(id){
+  var el = document.getElementById('waiverHist-'+id),
+      label = document.getElementById('waiverHistLabel-'+id);
+  if(!el) return;
+  var open = (el.style.display === 'table-row');
+  el.style.display = open ? 'none' : 'table-row';
+  if(label) label.textContent = open ? 'Show bids' : 'Hide bids';
+}
 function renderWaiverTransfersPage(){
   var root = document.getElementById('waiverTransfersRoot'); if (!root) return;
   var completed = (waiverState.waivers||[]).filter(function(w){ return w.status === 'completed'; });
@@ -2575,7 +2509,7 @@ function renderWaiverTransfersPage(){
   var ff = document.getElementById('waiverTransferFilterFranchise'); var rf = document.getElementById('waiverTransferFilterRole'); var tf = document.getElementById('waiverTransferFilterTeam');
   var franchiseFilter = ff ? ff.value : 'ALL'; var roleFilter = rf ? rf.value : 'ALL'; var teamFilter = tf ? tf.value : 'ALL';
   var filtered = completed.filter(function(w){ var p = getPlayerByName(w.playerName) || {}; return (franchiseFilter==='ALL'||(w.winner&&w.winner.franchise===franchiseFilter)) && (roleFilter==='ALL'||p.role===roleFilter) && (teamFilter==='ALL'||p.iplTeam===teamFilter); });
-  html += '<div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Date</th><th>Franchise</th><th>Player In</th><th>Player Out</th><th>Bid</th><th>Status</th><th>Bids</th></tr></thead><tbody>' + filtered.map(function(w){ var p = getPlayerByName(w.playerName)||{}; var tieNote = computeTieNote(w); var histRows = waiverSortBids(w.bids||[]).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(w.winner&&w.winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join(''); return '<tr><td>'+humanTime(w.completedAt).split(',')[0]+'</td><td>'+escapeHtml(w.winner.franchise)+'</td><td>'+escapeHtml(w.playerName)+' · '+escapeHtml(p.iplTeam||'')+' · '+escapeHtml(p.role||'')+'</td><td>'+escapeHtml(w.winner.dropPlayer)+'</td><td class="amount">'+formatINR(w.winner.amount)+'</td><td><span class="waiver-result-pill processed">PROCESSED</span></td><td><button class="waiver-toggle-link" style="margin:0;" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"-t\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'-t">Show</span></button></td></tr><tr id="waiverHist-'+escapeAttr(w.id)+'-t" style="display:none;"><td colspan="7" style="padding:0;"><div class="waiver-table-wrap" style="margin:0;border:none;border-top:1px solid rgba(255,255,255,.06);border-radius:0;"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Bid Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+histRows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></td></tr>'; }).join('') + '</tbody></table></div>';
+  html += '<div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Date</th><th>Franchise</th><th>Player In</th><th>Player Out</th><th>Bid</th><th>Status</th><th>Bids</th></tr></thead><tbody>' + filtered.map(function(w){ var p = getPlayerByName(w.playerName)||{}; var tieNote = computeTieNote(w); var histRows = waiverSortBids(w.bids||[]).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(w.winner&&w.winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join(''); return '<tr><td>'+humanTime(w.completedAt).split(',')[0]+'</td><td>'+escapeHtml(w.winner.franchise)+'</td><td>'+escapeHtml(w.playerName)+' · '+escapeHtml(p.iplTeam||'')+' · '+escapeHtml(p.role||'')+'</td><td>'+escapeHtml(w.winner.dropPlayer)+'</td><td class="amount">'+formatINR(w.winner.amount)+'</td><td><span class="waiver-result-pill processed">PROCESSED</span></td><td><button class="waiver-toggle-link" style="margin:0;" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"-t\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'-t">Show bids</span></button></td></tr><tr id="waiverHist-'+escapeAttr(w.id)+'-t" style="display:none;"><td colspan="7" style="padding:0;"><div class="waiver-table-wrap" style="margin:0;border:none;border-top:1px solid rgba(255,255,255,.06);border-radius:0;"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Bid Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+histRows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></td></tr>'; }).join('') + '</tbody></table></div>';
   root.innerHTML = html;
   if (ff) ff.value = franchiseFilter; if (rf) rf.value = roleFilter; if (tf) tf.value = teamFilter;
 }
@@ -3044,7 +2978,8 @@ function doLogin(){
     }
   });
 
-  // removed duplicate override to preserve budget render
+  // removed duplicate window.renderWaiverOpenPage override
+
       var myBid = findLatestBid(w, current);
       return '<div class="waiver-card">' +
         '<div class="waiver-card-top"><div class="waiver-player-line"><div class="waiver-avatar">'+initials(w.playerName)+'</div><div><div class="waiver-player-name">'+escapeHtml(w.playerName)+'</div><div class="waiver-meta"><span class="waiver-chip '+roleChipClass(p.role || 'AR')+'">'+escapeHtml(p.role || '')+'</span><span class="waiver-chip '+typeChipClass(p.origin || 'IND')+'">'+escapeHtml(p.origin || 'IND')+'</span><span class="waiver-chip team">'+escapeHtml(p.iplTeam || '')+'</span></div></div></div>' +
@@ -3598,7 +3533,7 @@ function doLogin(){
     var closes = now + 24*60*60*1000;
 
     if (!window.waiverState) window.waiverState = { waivers: [], budgets: {} };
-    if (!Array.isArray(window.waiverState.waivers)) window.// disabled auto wipe
+    if (!Array.isArray(window.waiverState.waivers)) window.// disabled auto wipe of waivers;
 
     window.waiverState.waivers.unshift({
       id: 'W' + now,
@@ -3904,81 +3839,14 @@ function doLogin(){
 </script>
 
 
-<script id="waiver-premium-budget-helper">
-(function(){
-  const WAIVER_FRANCHISES = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
-
-  function waiverFmtINR(v){
-    try { return '₹' + Number(v || 0).toLocaleString('en-IN'); }
-    catch(e){ return '₹' + (v || 0); }
-  }
-
-  window.renderPremiumWaiverBudgetStrip = function(){
-    const budgets = {};
-    WAIVER_FRANCHISES.forEach(f => budgets[f] = 250000);
-
-    const state = window.waiverState || window.STATE || {};
-    if (state && state.budgets && typeof state.budgets === 'object'){
-      WAIVER_FRANCHISES.forEach(f => {
-        if (state.budgets[f] != null) budgets[f] = Number(state.budgets[f]);
-      });
-    } else if (typeof window.getWaiverRemainingBudget === 'function'){
-      WAIVER_FRANCHISES.forEach(f => {
-        try { budgets[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
-      });
-    }
-
-    return `<div class="waiver-premium-budget-wrap">
-      <div class="waiver-premium-budget-head">
-        <div>
-          <div class="waiver-premium-budget-title">Waiver Budget Remaining</div>
-          <div class="waiver-premium-budget-sub">Visible to all franchises</div>
-        </div>
-      </div>
-      <div class="waiver-premium-budget-grid">
-        ${WAIVER_FRANCHISES.map(f => `
-          <div class="waiver-premium-budget-card">
-            <div class="waiver-premium-budget-name">${f}</div>
-            <div class="waiver-premium-budget-value">${waiverFmtINR(budgets[f])}</div>
-            <div class="waiver-premium-budget-foot">Remaining balance</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>`;
-  };
-})();
-</script>
-
-
-<script id="waiver-premium-budget-autorefresh">
-(function(){
-  ['adminCompleteWaiver','declareWaiverWinner'].forEach(function(fnName){
-    const orig = window[fnName];
-    if (typeof orig === 'function' && !orig.__premiumBudgetWrapped){
-      window[fnName] = async function(){
-        const res = await orig.apply(this, arguments);
-        try {
-          if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage();
-          if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage();
-          if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage();
-        } catch(e){}
-        return res;
-      };
-      window[fnName].__premiumBudgetWrapped = true;
-    }
-  });
-})();
-</script>
-
-
-<script id="waiver-all-budget-script">
+<script id="waiver-master-budget-script">
 (function(){
   const ALL_FRS = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
   function fmtInr(v){
     try { return '₹' + Number(v || 0).toLocaleString('en-IN'); }
     catch(e){ return '₹' + (v || 0); }
   }
-  window.renderAllFranchiseBudgetsBox = function(){
+  window.renderMasterAllBudgetsBox = function(){
     const state = window.waiverState || window.STATE || {};
     const budgets = {};
     ALL_FRS.forEach(f => budgets[f] = 250000);
@@ -3993,15 +3861,15 @@ function doLogin(){
       });
     }
 
-    return `<div class="waiver-all-budget-wrap">
-      <div class="waiver-all-budget-title">Waiver Budget Remaining</div>
-      <div class="waiver-all-budget-sub">Visible to all franchises</div>
-      <div class="waiver-all-budget-grid">
+    return `<div id="waiverAllBudgetBox" class="waiver-master-budget-wrap">
+      <div class="waiver-master-budget-title">Waiver Budget Remaining</div>
+      <div class="waiver-master-budget-sub">Visible to all franchises</div>
+      <div class="waiver-master-budget-grid">
         ${ALL_FRS.map(f => `
-          <div class="waiver-all-budget-card">
-            <div class="waiver-all-budget-name">${f}</div>
-            <div class="waiver-all-budget-value">${fmtInr(budgets[f])}</div>
-            <div class="waiver-all-budget-foot">Remaining balance</div>
+          <div class="waiver-master-budget-card">
+            <div class="waiver-master-budget-name">${f}</div>
+            <div class="waiver-master-budget-value">${fmtInr(budgets[f])}</div>
+            <div class="waiver-master-budget-foot">Remaining balance</div>
           </div>
         `).join('')}
       </div>
