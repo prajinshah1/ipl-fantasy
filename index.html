@@ -634,61 +634,6 @@ window.__firebaseReadyPromise = (async function(){
 })();
 </script>
 
-
-<style id="waiver-premium-budget-style">
-.waiver-premium-budget-wrap{
-  margin:0 0 18px 0;
-  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
-  border:1px solid rgba(255,255,255,0.10);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:0 10px 26px rgba(0,0,0,0.18);
-}
-.waiver-premium-budget-head{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;
-}
-.waiver-premium-budget-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:14px;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--text);
-}
-.waiver-premium-budget-sub{
-  font-size:12px;color:var(--text2);
-}
-.waiver-premium-budget-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
-}
-.waiver-premium-budget-card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:16px;
-  padding:12px 12px 10px;
-}
-.waiver-premium-budget-name{
-  font-size:12px;color:var(--text2);margin-bottom:6px;
-}
-.waiver-premium-budget-value{
-  font-family:'Rajdhani',sans-serif;
-  font-size:24px;
-  line-height:1;
-  font-weight:800;
-  color:var(--gold);
-}
-.waiver-premium-budget-foot{
-  font-size:11px;color:var(--muted);margin-top:6px;
-}
-@media(max-width:740px){
-  .waiver-premium-budget-wrap{padding:14px;}
-  .waiver-premium-budget-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .waiver-premium-budget-value{font-size:22px;}
-}
-</style>
-
 </head>
 <body>
 <div id="app">
@@ -2483,7 +2428,6 @@ function renderWaiverOpenPage(){
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
   var html = '';
-  html += (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '');
   html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
   html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
@@ -3015,7 +2959,7 @@ function doLogin(){
     var current = getCurrentWaiverFranchise();
     var meta = waiverStatusMeta();
     var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
-    var html = (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '') + '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value" style="font-size:22px;">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
+    var html = '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value" style="font-size:22px;">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
     html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
     if (!active.length) {
       html += '<div class="waiver-empty"><div class="icon">&#8635;</div><h3>No active waivers</h3><p>Be the first to nominate a player this cycle.</p></div>';
@@ -3876,73 +3820,6 @@ function doLogin(){
       });
     } catch (e) {
       console.error('Firebase bootstrap failed', e);
-    }
-  });
-})();
-</script>
-
-
-<script id="waiver-premium-budget-helper">
-(function(){
-  const WAIVER_FRANCHISES = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
-
-  function waiverFmtINR(v){
-    try { return '₹' + Number(v || 0).toLocaleString('en-IN'); }
-    catch(e){ return '₹' + (v || 0); }
-  }
-
-  window.renderPremiumWaiverBudgetStrip = function(){
-    const budgets = {};
-    WAIVER_FRANCHISES.forEach(f => budgets[f] = 250000);
-
-    const state = window.waiverState || window.STATE || {};
-    if (state && state.budgets && typeof state.budgets === 'object'){
-      WAIVER_FRANCHISES.forEach(f => {
-        if (state.budgets[f] != null) budgets[f] = Number(state.budgets[f]);
-      });
-    } else if (typeof window.getWaiverRemainingBudget === 'function'){
-      WAIVER_FRANCHISES.forEach(f => {
-        try { budgets[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
-      });
-    }
-
-    return `<div class="waiver-premium-budget-wrap">
-      <div class="waiver-premium-budget-head">
-        <div>
-          <div class="waiver-premium-budget-title">Waiver Budget Remaining</div>
-          <div class="waiver-premium-budget-sub">Visible to all franchises</div>
-        </div>
-      </div>
-      <div class="waiver-premium-budget-grid">
-        ${WAIVER_FRANCHISES.map(f => `
-          <div class="waiver-premium-budget-card">
-            <div class="waiver-premium-budget-name">${f}</div>
-            <div class="waiver-premium-budget-value">${waiverFmtINR(budgets[f])}</div>
-            <div class="waiver-premium-budget-foot">Remaining balance</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>`;
-  };
-})();
-</script>
-
-
-<script id="waiver-premium-budget-autorefresh">
-(function(){
-  ['adminCompleteWaiver','declareWaiverWinner'].forEach(function(fnName){
-    const orig = window[fnName];
-    if (typeof orig === 'function' && !orig.__premiumBudgetWrapped){
-      window[fnName] = async function(){
-        const res = await orig.apply(this, arguments);
-        try {
-          if (typeof renderWaiverOpenPage === 'function') renderWaiverOpenPage();
-          if (typeof renderWaiverMyBidsPage === 'function') renderWaiverMyBidsPage();
-          if (typeof renderWaiverTransfersPage === 'function') renderWaiverTransfersPage();
-        } catch(e){}
-        return res;
-      };
-      window[fnName].__premiumBudgetWrapped = true;
     }
   });
 })();
