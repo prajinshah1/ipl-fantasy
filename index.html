@@ -2496,14 +2496,13 @@ function toggleWaiverHistory(id){
       label = document.getElementById('waiverHistLabel-'+id);
   if(!el) return;
 
-  var isRow = (el.tagName || '').toLowerCase() === 'tr';
-  var open = el.style.display && el.style.display !== 'none';
+  var open = (el.style.display && el.style.display !== 'none');
 
   if(open){
     el.style.display = 'none';
     if(label) label.textContent = 'Show bids';
   }else{
-    el.style.display = isRow ? 'table-row' : 'block';
+    el.style.display = 'block';
     if(label) label.textContent = 'Hide bids';
   }
 }
