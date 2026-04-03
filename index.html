@@ -651,23 +651,23 @@ window.__firebaseReadyPromise = (async function(){
 </style>
 
 
-<style id="mobile-scroll-fix-final">
+<style id="mobile-scroll-fix-only">
 @media(max-width:740px){
   .linechart-wrap{
     overflow-x:auto;
+    overflow-y:hidden;
     -webkit-overflow-scrolling:touch;
   }
   #pointsChartSvg{
     min-width:900px;
+    display:block;
   }
-  .roles-table-wrap,
-  .score-block,
   .league-panel{
     overflow-x:auto;
     -webkit-overflow-scrolling:touch;
   }
-  table{
-    min-width:800px;
+  .league-panel table{
+    min-width:820px;
   }
 }
 </style>
@@ -2506,7 +2506,7 @@ function renderWaiverMyBidsPage(){
     var rows = waiverSortBids(w.bids || []).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+(b.franchise===current?' (you)':'')+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(winner && winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join('');
     return '<div class="waiver-completed-card"><div class="waiver-completed-top"><div class="waiver-player-line"><div class="waiver-avatar">'+initials(w.playerName)+'</div><div><div class="waiver-player-name">'+escapeHtml(w.playerName)+'</div><div style="font-size:14px;color:var(--text2);">My bid: '+formatCompactINR(bid.amount)+'</div><div style="font-size:14px;color:var(--text2);margin-top:8px;">Transfer out: '+escapeHtml(bid.dropPlayer)+' ('+escapeHtml(p.role || '')+')</div></div></div><div>'+titleStatus+'</div></div>'+
     (won && w.status==='completed' ? '<div class="waiver-success-bar">Added to your squad on '+ humanTime(w.completedAt) +'</div>' : '') +
-    '<button class="waiver-toggle-link" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'">Show bids</span></button>'+
+    '<button class="waiver-toggle-link" type="button" onclick="toggleWaiverHistory(\''+escapeAttr(w.id)+'\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'">Show bids</span></button>'+
     '<div id="waiverHist-'+escapeAttr(w.id)+'" style="display:none;"><div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+rows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></div></div>';
   }
   if (completed.length) html += '<div style="font-size:12px;letter-spacing:.12em;color:var(--text2);font-weight:800;text-transform:uppercase;margin:0 0 12px;">Completed ('+completed.length+')</div>' + completed.map(cardFor).join('');
@@ -2517,9 +2517,15 @@ function toggleWaiverHistory(id){
   var el = document.getElementById('waiverHist-'+id),
       label = document.getElementById('waiverHistLabel-'+id);
   if(!el) return;
-  var open = (el.style.display === 'table-row');
-  el.style.display = open ? 'none' : 'table-row';
-  if(label) label.textContent = open ? 'Show bids' : 'Hide bids';
+  var tag = (el.tagName || '').toLowerCase();
+  var open = !!(el.style.display && el.style.display !== 'none');
+  if(open){
+    el.style.display = 'none';
+    if(label) label.textContent = 'Show bids';
+  } else {
+    el.style.display = (tag === 'tr') ? 'table-row' : 'block';
+    if(label) label.textContent = 'Hide bids';
+  }
 }
 function renderWaiverTransfersPage(){
   var root = document.getElementById('waiverTransfersRoot'); if (!root) return;
@@ -2531,7 +2537,7 @@ function renderWaiverTransfersPage(){
   var ff = document.getElementById('waiverTransferFilterFranchise'); var rf = document.getElementById('waiverTransferFilterRole'); var tf = document.getElementById('waiverTransferFilterTeam');
   var franchiseFilter = ff ? ff.value : 'ALL'; var roleFilter = rf ? rf.value : 'ALL'; var teamFilter = tf ? tf.value : 'ALL';
   var filtered = completed.filter(function(w){ var p = getPlayerByName(w.playerName) || {}; return (franchiseFilter==='ALL'||(w.winner&&w.winner.franchise===franchiseFilter)) && (roleFilter==='ALL'||p.role===roleFilter) && (teamFilter==='ALL'||p.iplTeam===teamFilter); });
-  html += '<div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Date</th><th>Franchise</th><th>Player In</th><th>Player Out</th><th>Bid</th><th>Status</th><th>Bids</th></tr></thead><tbody>' + filtered.map(function(w){ var p = getPlayerByName(w.playerName)||{}; var tieNote = computeTieNote(w); var histRows = waiverSortBids(w.bids||[]).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(w.winner&&w.winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join(''); return '<tr><td>'+humanTime(w.completedAt).split(',')[0]+'</td><td>'+escapeHtml(w.winner.franchise)+'</td><td>'+escapeHtml(w.playerName)+' · '+escapeHtml(p.iplTeam||'')+' · '+escapeHtml(p.role||'')+'</td><td>'+escapeHtml(w.winner.dropPlayer)+'</td><td class="amount">'+formatINR(w.winner.amount)+'</td><td><span class="waiver-result-pill processed">PROCESSED</span></td><td><button class="waiver-toggle-link" style="margin:0;" type="button" onclick="toggleWaiverHistory(\'"+escapeAttr(w.id)+"-t\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'-t">Show bids</span></button></td></tr><tr id="waiverHist-'+escapeAttr(w.id)+'-t" style="display:none;"><td colspan="7" style="padding:0;"><div class="waiver-table-wrap" style="margin:0;border:none;border-top:1px solid rgba(255,255,255,.06);border-radius:0;"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Bid Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+histRows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></td></tr>'; }).join('') + '</tbody></table></div>';
+  html += '<div class="waiver-table-wrap"><table class="waiver-table"><thead><tr><th>Date</th><th>Franchise</th><th>Player In</th><th>Player Out</th><th>Bid</th><th>Status</th><th>Bids</th></tr></thead><tbody>' + filtered.map(function(w){ var p = getPlayerByName(w.playerName)||{}; var tieNote = computeTieNote(w); var histRows = waiverSortBids(w.bids||[]).map(function(b){ return '<tr><td>'+escapeHtml(b.franchise)+'</td><td class="amount">'+formatINR(b.amount)+'</td><td>'+escapeHtml(b.dropPlayer)+'</td><td>'+humanTime(b.timestamp)+'</td><td>'+(w.winner&&w.winner.franchise===b.franchise?'<span class="waiver-result-pill won">🏆 WON</span>':'<span class="waiver-result-pill lost">✕ LOST</span>')+'</td></tr>'; }).join(''); return '<tr><td>'+humanTime(w.completedAt).split(',')[0]+'</td><td>'+escapeHtml(w.winner.franchise)+'</td><td>'+escapeHtml(w.playerName)+' · '+escapeHtml(p.iplTeam||'')+' · '+escapeHtml(p.role||'')+'</td><td>'+escapeHtml(w.winner.dropPlayer)+'</td><td class="amount">'+formatINR(w.winner.amount)+'</td><td><span class="waiver-result-pill processed">PROCESSED</span></td><td><button class="waiver-toggle-link" style="margin:0;" type="button" onclick="toggleWaiverHistory(\''+escapeAttr(w.id)+'-t\')"><span id="waiverHistLabel-'+escapeAttr(w.id)+'-t">Show bids</span></button></td></tr><tr id="waiverHist-'+escapeAttr(w.id)+'-t" style="display:none;"><td colspan="7" style="padding:0;"><div class="waiver-table-wrap" style="margin:0;border:none;border-top:1px solid rgba(255,255,255,.06);border-radius:0;"><table class="waiver-table"><thead><tr><th>Franchise</th><th>Bid Amount</th><th>Transfer Out</th><th>Placed At</th><th>Result</th></tr></thead><tbody>'+histRows+'</tbody></table>'+(tieNote?'<div class="waiver-note tie">'+tieNote+'</div>':'')+'</div></td></tr>'; }).join('') + '</tbody></table></div>';
   root.innerHTML = html;
   if (ff) ff.value = franchiseFilter; if (rf) rf.value = roleFilter; if (tf) tf.value = teamFilter;
 }
