@@ -2482,7 +2482,8 @@ function renderWaiverOpenPage(){
   var meta = waiverStatusMeta();
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
-  var html = ''; html += (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '');
+  var html = '';
+  html += (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '');
   html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
   html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
@@ -3014,7 +3015,7 @@ function doLogin(){
     var current = getCurrentWaiverFranchise();
     var meta = waiverStatusMeta();
     var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
-    var html = '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value" style="font-size:22px;">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
+    var html = (typeof renderPremiumWaiverBudgetStrip==='function' ? renderPremiumWaiverBudgetStrip() : '') + '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value" style="font-size:22px;">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
     html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
     if (!active.length) {
       html += '<div class="waiver-empty"><div class="icon">&#8635;</div><h3>No active waivers</h3><p>Be the first to nominate a player this cycle.</p></div>';
@@ -3881,7 +3882,7 @@ function doLogin(){
 </script>
 
 
-<script id="waiver-premium-budget-script">
+<script id="waiver-premium-budget-helper">
 (function(){
   const WAIVER_FRANCHISES = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
 
@@ -3890,25 +3891,21 @@ function doLogin(){
     catch(e){ return '₹' + (v || 0); }
   }
 
-  function waiverGetBudgetMap(){
-    const out = {};
-    WAIVER_FRANCHISES.forEach(f => out[f] = 250000);
+  window.renderPremiumWaiverBudgetStrip = function(){
+    const budgets = {};
+    WAIVER_FRANCHISES.forEach(f => budgets[f] = 250000);
 
     const state = window.waiverState || window.STATE || {};
     if (state && state.budgets && typeof state.budgets === 'object'){
       WAIVER_FRANCHISES.forEach(f => {
-        if (state.budgets[f] != null) out[f] = Number(state.budgets[f]);
+        if (state.budgets[f] != null) budgets[f] = Number(state.budgets[f]);
       });
     } else if (typeof window.getWaiverRemainingBudget === 'function'){
       WAIVER_FRANCHISES.forEach(f => {
-        try { out[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
+        try { budgets[f] = Number(window.getWaiverRemainingBudget(f)); } catch(e){}
       });
     }
-    return out;
-  }
 
-  window.renderPremiumWaiverBudgetStrip = function(){
-    const budgets = waiverGetBudgetMap();
     return `<div class="waiver-premium-budget-wrap">
       <div class="waiver-premium-budget-head">
         <div>
@@ -3927,10 +3924,13 @@ function doLogin(){
       </div>
     </div>`;
   };
+})();
+</script>
 
-  // Ensure render after admin result too
-  const wrapFns = ['adminCompleteWaiver','declareWaiverWinner'];
-  wrapFns.forEach(function(fnName){
+
+<script id="waiver-premium-budget-autorefresh">
+(function(){
+  ['adminCompleteWaiver','declareWaiverWinner'].forEach(function(fnName){
     const orig = window[fnName];
     if (typeof orig === 'function' && !orig.__premiumBudgetWrapped){
       window[fnName] = async function(){
