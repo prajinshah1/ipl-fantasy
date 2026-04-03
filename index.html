@@ -419,6 +419,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .fr-stat-label{font-size:12px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;}
 .fr-mini-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;}
 
+
+/* FINAL mobile table fixes */
+@media (max-width: 768px){
+  .roles-table-wrap{
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .roles-table-wrap .roles-tbl{
+    min-width:720px;
+  }
+  #page-leaderboard .roles-table-wrap .roles-tbl{
+    min-width:760px;
+  }
+  #franchisePlayerPointsPage .roles-table-wrap .roles-tbl{
+    min-width:680px;
+  }
+}
+
 </style>
 
 <style id="waiver-final-tweaks">
@@ -1066,7 +1084,7 @@ var PLAYERS = [
   {name:"Danish Malewar",role:"BAT",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"David Miller",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:"Bhavya"},
   {name:"David Payne",role:"BOWL",origin:"OVS",iplTeam:"SRH",franchise:""},
-  {name:"Deepak Chahar",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:"Prajin"},
+  {name:"Deepak Chahar",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Devdutt Padikkal",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Karan"},
   {name:"Dewald Brevis",role:"BAT",origin:"OVS",iplTeam:"CSK",franchise:"Sanket"},
   {name:"Dhruv Jurel",role:"WK",origin:"IND",iplTeam:"RR",franchise:"Bhavya"},
