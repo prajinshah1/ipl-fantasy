@@ -2495,16 +2495,9 @@ function toggleWaiverHistory(id){
   var el = document.getElementById('waiverHist-'+id),
       label = document.getElementById('waiverHistLabel-'+id);
   if(!el) return;
-
   var open = (el.style.display && el.style.display !== 'none');
-
-  if(open){
-    el.style.display = 'none';
-    if(label) label.textContent = 'Show bids';
-  }else{
-    el.style.display = 'block';
-    if(label) label.textContent = 'Hide bids';
-  }
+  el.style.display = open ? 'none' : 'block';
+  if(label) label.textContent = open ? 'Show bids' : 'Hide bids';
 }
 function renderWaiverTransfersPage(){
   var root = document.getElementById('waiverTransfersRoot'); if (!root) return;
