@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPL Fantasy 2025</title>
+<title>IPL Fantasy 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -419,6 +419,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .fr-stat-label{font-size:12px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;}
 .fr-mini-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;}
 
+
+/* FINAL mobile table fixes */
+@media (max-width: 768px){
+  .roles-table-wrap{
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .roles-table-wrap .roles-tbl{
+    min-width:720px;
+  }
+  #page-leaderboard .roles-table-wrap .roles-tbl{
+    min-width:760px;
+  }
+  #franchisePlayerPointsPage .roles-table-wrap .roles-tbl{
+    min-width:680px;
+  }
+}
+
 </style>
 
 <style id="waiver-final-tweaks">
@@ -616,17 +634,6 @@ window.__firebaseReadyPromise = (async function(){
 })();
 </script>
 
-
-<style id="waiver-budget-strip-style">
-.waiver-budget-strip{margin:0 0 16px 0;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:14px 16px;}
-.waiver-budget-strip-title{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);margin-bottom:12px;font-weight:700;}
-.waiver-budget-strip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
-.waiver-budget-strip-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:10px 12px;}
-.waiver-budget-strip-name{font-size:12px;color:var(--text2);margin-bottom:4px;}
-.waiver-budget-strip-value{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:800;line-height:1;color:var(--gold);}
-.waiver-budget-strip-sub{margin-top:6px;font-size:11px;color:var(--muted);}
-</style>
-
 </head>
 <body>
 <div id="app">
@@ -636,7 +643,7 @@ window.__firebaseReadyPromise = (async function(){
   <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
   <div class="nav-brand">
     <div class="nav-brand-icon">&#127921;</div>
-    <span class="nav-brand-name">IPL Fantasy 2025</span>
+    <span class="nav-brand-name">IPL Fantasy 2026</span>
   </div>
   <span class="nav-page-title" id="mobileTitle">Dashboard</span>
   <div class="nav-right"></div>
@@ -806,7 +813,6 @@ window.__firebaseReadyPromise = (async function(){
 
   <div class="page" id="page-waivers">
   <div class="page-hdr"><h2>Waivers</h2><p>Nominate and bid on available players.</p></div>
-  <div id="waiverBudgetStripMount"></div>
   <div id="waiverOpenRoot"></div>
 </div>
   <div class="page" id="page-mybids">
@@ -1046,7 +1052,7 @@ var PLAYERS = [
   {name:"Aman Rao",role:"BAT",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Amit Kumar",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
   {name:"Angkrish Raghuvanshi",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:"Sanket"},
-  {name:"Aniket Verma",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:""},
+  {name:"Aniket Verma",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:"Jash"},
   {name:"Anrich Nortje",role:"BOWL",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Anshul Kamboj",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Anuj Rawat",role:"WK",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1062,9 +1068,9 @@ var PLAYERS = [
   {name:"Auqib Nabi",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Bhavya"},
   {name:"Avesh Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Hersh"},
   {name:"Axar Patel",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Jash"},
-  {name:"Ayush Badoni",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:""},
+  {name:"Ayush Badoni",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:"Jash"},
   {name:"Ayush Mhatre",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:"Jash"},
-  {name:"Azmatullah Omarzai",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Karan"},
+  {name:"Azmatullah Omarzai",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Ben Duckett",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Ben Dwarshuis",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Bhuvneshwar Kumar",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Hersh"},
@@ -1072,7 +1078,7 @@ var PLAYERS = [
   {name:"Brijesh Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Brydon Carse",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Cameron Green",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Karan"},
-  {name:"Cooper Connolly",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
+  {name:"Cooper Connolly",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Hersh"},
   {name:"Corbin Bosch",role:"AR",origin:"OVS",iplTeam:"MI",franchise:""},
   {name:"Daksh Kamra",role:"AR",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Danish Malewar",role:"BAT",origin:"IND",iplTeam:"MI",franchise:""},
@@ -1101,8 +1107,8 @@ var PLAYERS = [
   {name:"Ishan Kishan",role:"WK",origin:"IND",iplTeam:"SRH",franchise:"Hersh"},
   {name:"Ishant Sharma",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Jack Edwards",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
-  {name:"Jacob Bethell",role:"AR",origin:"OVS",iplTeam:"RCB",franchise:"Hersh"},
-  {name:"Jacob Duffy",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:""},
+  {name:"Jacob Bethell",role:"AR",origin:"OVS",iplTeam:"RCB",franchise:""},
+  {name:"Jacob Duffy",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:"Bhavya"},
   {name:"Jamie Overton",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
   {name:"Jason Holder",role:"AR",origin:"OVS",iplTeam:"GT",franchise:"Hersh"},
   {name:"Jasprit Bumrah",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:"Karan"},
@@ -1113,7 +1119,7 @@ var PLAYERS = [
   {name:"Jordan Cox",role:"BAT",origin:"OVS",iplTeam:"RCB",franchise:""},
   {name:"Jos Buttler",role:"WK",origin:"OVS",iplTeam:"GT",franchise:"Prajin"},
   {name:"Josh Hazlewood",role:"BOWL",origin:"OVS",iplTeam:"RCB",franchise:"Sanket"},
-  {name:"Josh Inglis",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:"Jash"},
+  {name:"Josh Inglis",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Kagiso Rabada",role:"BOWL",origin:"OVS",iplTeam:"GT",franchise:"Darshil"},
   {name:"Kamindu Mendis",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Kanishk Chouhan",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
@@ -1133,7 +1139,7 @@ var PLAYERS = [
   {name:"Liam Livingstone",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:"Karan"},
   {name:"Lockie Ferguson",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Luke Wood",role:"BOWL",origin:"OVS",iplTeam:"GT",franchise:""},
-  {name:"Lungi Ngidi",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:""},
+  {name:"Lungi Ngidi",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:"Jash"},
   {name:"M Shahrukh Khan",role:"BAT",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Madhav Tiwari",role:"AR",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Manav Suthar",role:"AR",origin:"IND",iplTeam:"GT",franchise:""},
@@ -1142,7 +1148,7 @@ var PLAYERS = [
   {name:"Manish Pandey",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Marco Jansen",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Prajin"},
   {name:"Marcus Stoinis",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Darshil"},
-  {name:"Matheesha Pathirana",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:"Jash"},
+  {name:"Matheesha Pathirana",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Matt Henry",role:"BOWL",origin:"OVS",iplTeam:"CSK",franchise:"Jash"},
   {name:"Matthew Breetzke",role:"BAT",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Matthew Short",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
@@ -1151,12 +1157,12 @@ var PLAYERS = [
   {name:"Mayank Yadav",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
   {name:"Mitchell Marsh",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:"Sanket"},
   {name:"Mitchell Owen",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:""},
-  {name:"Mitchell Santner",role:"AR",origin:"OVS",iplTeam:"MI",franchise:""},
+  {name:"Mitchell Santner",role:"AR",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
   {name:"Mitchell Starc",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:"Jash"},
   {name:"Mohammed Shami",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Bhavya"},
   {name:"Mohammed Siraj",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:"Darshil"},
   {name:"Mohd Izhar",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
-  {name:"Mohsin Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
+  {name:"Mohsin Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Prajin"},
   {name:"MS Dhoni",role:"WK",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Mukesh Choudhary",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Mukesh Kumar",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:"Prajin"},
@@ -1164,7 +1170,7 @@ var PLAYERS = [
   {name:"Musheer Khan",role:"AR",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Naman Dhir",role:"AR",origin:"IND",iplTeam:"MI",franchise:"Bhavya"},
   {name:"Naman Tiwari",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
-  {name:"Nandre Burger",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:""},
+  {name:"Nandre Burger",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:"Bhavya"},
   {name:"Nathan Ellis",role:"BOWL",origin:"OVS",iplTeam:"CSK",franchise:""},
   {name:"Nehal Wadhera",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:"Sanket"},
   {name:"Nicholas Pooran",role:"WK",origin:"OVS",iplTeam:"LSG",franchise:"Sanket"},
@@ -1189,10 +1195,10 @@ var PLAYERS = [
   {name:"Priyansh Arya",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:"Sanket"},
   {name:"Pyla Avinash",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Quinton de Kock",role:"WK",origin:"OVS",iplTeam:"MI",franchise:"Darshil"},
-  {name:"Rachin Ravindra",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:""},
+  {name:"Rachin Ravindra",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Darshil"},
   {name:"Raghu Sharma",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Rahul Chahar",role:"BOWL",origin:"IND",iplTeam:"CSK",franchise:""},
-  {name:"Rahul Tewatia",role:"BAT",origin:"IND",iplTeam:"GT",franchise:"Karan"},
+  {name:"Rahul Tewatia",role:"BAT",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Rahul Tripathi",role:"BAT",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Raj Bawa",role:"AR",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Rajat Patidar",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Prajin"},
@@ -1214,12 +1220,12 @@ var PLAYERS = [
   {name:"Ruturaj Gaikwad",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:"Sanket"},
   {name:"Ryan Rickelton",role:"WK",origin:"OVS",iplTeam:"MI",franchise:"Prajin"},
   {name:"Sahil Parakh",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
-  {name:"Sai Kishore",role:"AR",origin:"IND",iplTeam:"GT",franchise:"Hersh"},
+  {name:"Sai Kishore",role:"AR",origin:"IND",iplTeam:"GT",franchise:""},
   {name:"Sai Sudharsan",role:"BAT",origin:"IND",iplTeam:"GT",franchise:"Hersh"},
   {name:"Sakib Hussain",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
   {name:"Salil Arora",role:"BAT",origin:"IND",iplTeam:"SRH",franchise:""},
-  {name:"Sam Curran",role:"AR",origin:"OVS",iplTeam:"RR",franchise:"Darshil"},
-  {name:"Sameer Rizvi",role:"BAT",origin:"IND",iplTeam:"DC",franchise:""},
+  {name:"Sam Curran",role:"AR",origin:"OVS",iplTeam:"RR",franchise:""},
+  {name:"Sameer Rizvi",role:"BAT",origin:"IND",iplTeam:"DC",franchise:"Karan"},
   {name:"Sandeep Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:"Hersh"},
   {name:"Sanju Samson",role:"WK",origin:"IND",iplTeam:"CSK",franchise:"Hersh"},
   {name:"Sarfaraz Khan",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:""},
@@ -1243,17 +1249,17 @@ var PLAYERS = [
   {name:"Sushant Mishra",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Suyash Sharma",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Swapnil Singh",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
-  {name:"T Natarajan",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:""},
+  {name:"T Natarajan",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:"Karan"},
   {name:"Tejasvi Dahiya",role:"WK",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Tilak Varma",role:"BAT",origin:"IND",iplTeam:"MI",franchise:"Karan"},
   {name:"Tim David",role:"BAT",origin:"OVS",iplTeam:"RCB",franchise:""},
-  {name:"Tim Seifert",role:"WK",origin:"OVS",iplTeam:"KKR",franchise:"Jash"},
+  {name:"Tim Seifert",role:"WK",origin:"OVS",iplTeam:"KKR",franchise:""},
   {name:"Tom Banton",role:"BAT",origin:"OVS",iplTeam:"GT",franchise:""},
   {name:"Travis Head",role:"BAT",origin:"OVS",iplTeam:"SRH",franchise:"Darshil"},
   {name:"Trent Boult",role:"BOWL",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
   {name:"Tripurana Vijay",role:"BOWL",origin:"IND",iplTeam:"DC",franchise:""},
   {name:"Tristan Stubbs",role:"BAT",origin:"OVS",iplTeam:"DC",franchise:"Bhavya"},
-  {name:"Tushar Deshpande",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:"Bhavya"},
+  {name:"Tushar Deshpande",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Umran Malik",role:"BOWL",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Urvil Patel",role:"WK",origin:"IND",iplTeam:"CSK",franchise:""},
   {name:"Vaibhav Arora",role:"BOWL",origin:"IND",iplTeam:"KKR",franchise:"Hersh"},
@@ -1263,23 +1269,23 @@ var PLAYERS = [
   {name:"Vicky Ostwal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Vignesh Puthur",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Vihaan Malhotra",role:"AR",origin:"IND",iplTeam:"RCB",franchise:""},
-  {name:"Vijaykumar Vyshak",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
+  {name:"Vijaykumar Vyshak",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:"Karan"},
   {name:"Vipraj Nigam",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Darshil"},
   {name:"Virat Kohli",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Bhavya"},
   {name:"Vishal Nishad",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Vishnu Vinod",role:"WK",origin:"IND",iplTeam:"PBKS",franchise:""},
-  {name:"Wanindu Hasaranga",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:"Karan"},
+  {name:"Wanindu Hasaranga",role:"AR",origin:"OVS",iplTeam:"LSG",franchise:""},
   {name:"Washington Sundar",role:"AR",origin:"IND",iplTeam:"GT",franchise:"Karan"},
   {name:"Will Jacks",role:"AR",origin:"OVS",iplTeam:"MI",franchise:"Hersh"},
   {name:"Xavier Bartlett",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
-  {name:"Yash Dayal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Prajin"},
+  {name:"Yash Dayal",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:""},
   {name:"Yash Raj Punja",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Yash Thakur",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Yashasvi Jaiswal",role:"BAT",origin:"IND",iplTeam:"RR",franchise:"Darshil"},
   {name:"Yudhvir Singh",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
   {name:"Yuzvendra Chahal",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:"Bhavya"},
   {name:"Zak Foulkes",role:"AR",origin:"OVS",iplTeam:"CSK",franchise:""},
-  {name:"Zeeshan Ansari",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:"Bhavya"}
+  {name:"Zeeshan Ansari",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""}
 ];
 
 var SCHEDULE = [
@@ -2415,32 +2421,14 @@ function renderAllFranchiseWaiverBalances(){
 function waiverFranchiseOptions(selected){
   return FRANCHISES.map(function(f){ return '<option value="'+escapeAttr(f)+'"'+(selected===f?' selected':'')+'>'+escapeHtml(f)+'</option>'; }).join('');
 }
-
-function renderWaiverBudgetStrip(){
-  var mount = document.getElementById('waiverBudgetStripMount'); if (!mount) return;
-  var franchises = (typeof FRANCHISES !== 'undefined' && Array.isArray(FRANCHISES)) ? FRANCHISES.filter(function(f){ return f !== 'Admin'; }) : ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
-  mount.innerHTML = '<div class="waiver-budget-strip">'+
-    '<div class="waiver-budget-strip-title">Balance Waiver Budget Remaining — All Franchises</div>'+
-    '<div class="waiver-budget-strip-grid">'+
-      franchises.map(function(f){
-        return '<div class="waiver-budget-strip-card">'+
-          '<div class="waiver-budget-strip-name">+f+'</div>'+
-          '<div class="waiver-budget-strip-value">'+formatINR(getWaiverRemainingBudget(f))+'</div>'+
-          '<div class="waiver-budget-strip-sub">Remaining balance</div>'+
-        '</div>';
-      }).join('')+
-    '</div>'+
-  '</div>';
-}
-
 function renderWaiverOpenPage(){
   var root = document.getElementById('waiverOpenRoot'); if (!root) return;
-  renderWaiverBudgetStrip();
   var current = getCurrentWaiverFranchise();
   var meta = waiverStatusMeta();
   var active = (waiverState.waivers || []).filter(function(w){ return w.status === 'active'; });
 
   var html = '';
+  html += renderAllFranchiseWaiverBalances();
   html += '<div class="waiver-toolbar"><div class="waiver-budget-box"><div><div class="panel-title" style="margin-bottom:8px;">Open Waivers</div><div style="font-size:13px;color:var(--text2);">Nominate and bid on available players</div></div><div class="waiver-budget"><span class="label">Logged in as</span><span class="value">'+escapeHtml(current)+'</span></div><div class="waiver-budget"><span class="label">Waiver budget</span><span class="value">'+formatINR(getWaiverRemainingBudget(current))+'</span></div><button class="waiver-btn" type="button" onclick="openWaiverNominationModal()">＋ Nominate</button></div></div>';
   html += '<div class="waiver-status-banner"><div class="left"><div class="waiver-status-dot"></div><div><div class="waiver-status-title">'+meta.title+'</div><div class="waiver-status-sub">'+meta.sub+'</div></div></div><div class="waiver-status-time"><div class="label">'+meta.rightLabel+'</div><div class="value">'+meta.rightValue+'</div></div></div>';
 
