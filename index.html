@@ -100,7 +100,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .ipl-team-short{font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;}
 
 /* ROLES TABLE */
-.roles-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.roles-table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:auto;}
 .roles-tbl{width:100%;border-collapse:collapse;}
 .roles-tbl th{padding:12px 20px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:left;background:var(--surface2);border-bottom:1px solid var(--border);}
 .roles-tbl td{padding:18px 20px;border-bottom:1px solid var(--border);vertical-align:middle;}
@@ -361,10 +361,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   /* Franchise player points table */
   #page-franchiseplayerpoints .roles-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 
+  /* Points report table */
+  #page-pointsreport .roles-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  #page-pointsreport .roles-tbl{min-width:580px;}
+  #page-pointsreport .roles-tbl th,
+  #page-pointsreport .roles-tbl td{white-space:nowrap;}
+
   /* Franchise teams cards */
-  .fr-team-card{padding:14px;}
-  .fr-team-name{font-size:18px;}
-  .fr-stat-row{grid-template-columns:repeat(3,1fr);}
+  .fr-team-card{border-radius:18px;margin-bottom:14px;}
+  .fr-card-header{padding:16px 16px 14px;}
+  .fr-card-body{padding:12px 16px 16px;}
+  .fr-card-avatar{width:42px;height:42px;font-size:16px;border-radius:12px;}
+  .fr-team-name{font-size:22px;}
+  .fr-points-badge-val{font-size:30px;}
+  .fr-stat-row{grid-template-columns:repeat(5,1fr);gap:6px;}
+  .fr-stat-box{padding:10px 4px;}
+  .fr-stat-value{font-size:20px;}
+  .fr-stat-label{font-size:9px;}
+  .fr-card-watermark{font-size:64px;}
   .fr-mini-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 
   /* All players filters stack */
@@ -541,18 +555,359 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .roles-tbl td.franchise-link:hover{color:var(--teal);transform:translateX(3px);}
 
 
-.fr-team-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:16px;}
-.fr-team-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}
-.fr-team-name{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px;}
-.fr-team-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--text2);font-size:14px;}
-.fr-team-points{color:#ff00ff;font-weight:800;}
-.fr-view-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;}
-.fr-view-btn:hover{border-color:rgba(6,214,160,.35);color:var(--teal);}
-.fr-stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-bottom:14px;}
-.fr-stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
-.fr-stat-value{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:800;color:var(--text);line-height:1;margin-bottom:4px;}
-.fr-stat-label{font-size:12px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;}
-.fr-mini-table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px;}
+/* ── DASHBOARD ── */
+.db-hero{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(79,70,229,0.06));
+  border:1px solid rgba(124,58,237,0.25);
+  border-radius:20px;padding:22px 24px;margin-bottom:20px;
+}
+.db-hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.db-hero-title{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;letter-spacing:.04em;color:var(--text);margin-bottom:6px;}
+.db-hero-sub{font-size:13px;color:var(--text2);}
+.db-season-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.25);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--teal);}
+.db-season-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(6,214,160,0.2);}
+.db-section-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;}
+.db-standings{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.db-standing-row{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;transition:all 0.15s;}
+.db-standing-row:hover{border-color:var(--border2);transform:translateX(3px);}
+.db-standing-row.db-rank-1{border-color:rgba(245,166,35,.35);background:rgba(245,166,35,.04);}
+.db-standing-row.db-rank-2{border-color:rgba(76,201,240,.25);}
+.db-standing-row.db-rank-3{border-color:rgba(192,132,252,.25);}
+.db-rank-num{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:800;width:28px;text-align:center;color:var(--muted);}
+.db-rank-1 .db-rank-num{color:var(--gold);}
+.db-rank-2 .db-rank-num{color:var(--blue);}
+.db-rank-3 .db-rank-num{color:var(--purple);}
+.db-standing-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.db-standing-name{font-weight:700;font-size:15px;color:var(--text);flex:1;}
+.db-standing-pts{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:800;color:var(--teal);}
+.db-standing-bar-wrap{width:100px;height:6px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;flex-shrink:0;}
+.db-standing-bar{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--blue));transition:width .6s ease;}
+.db-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.db-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px;}
+.db-card-title{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.db-chart-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.db-chart-legend-item{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.db-chart-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.db-chart-wrap{overflow:hidden;border-radius:10px;}
+.db-chart-svg{width:100%;display:block;}
+.db-squads-list{display:flex;flex-direction:column;gap:6px;}
+.db-squad-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.db-squad-row:hover{background:rgba(255,255,255,.06);border-color:var(--border2);}
+.db-squad-avatar{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.db-squad-name{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.db-squad-count{font-size:11px;color:var(--muted);}
+.db-squad-pts{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:800;color:var(--teal);}
+.db-performers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-bottom:8px;}
+.db-performer-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px;cursor:pointer;transition:all .15s;}
+.db-performer-card:hover{border-color:var(--border2);transform:translateY(-2px);}
+.db-performer-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.db-performer-meta{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.db-performer-pts{font-family:'Rajdhani',sans-serif;font-size:32px;font-weight:800;line-height:1;color:var(--teal);}
+.db-performer-label{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.06em;text-transform:uppercase;}
+@media(max-width:740px){
+  .db-hero{flex-direction:column;padding:16px;}
+  .db-hero-title{font-size:24px;}
+  .db-two-col{grid-template-columns:1fr;}
+  .db-performers-grid{grid-template-columns:repeat(2,1fr);}
+  .db-standing-bar-wrap{display:none;}
+  .db-standing-pts{font-size:20px;}
+}
+
+/* ══════════════════════════════════════════
+   PREMIUM FRANCHISE CARDS
+══════════════════════════════════════════ */
+.fr-team-card{
+  position:relative;
+  background:linear-gradient(180deg,#0f1825 0%,#080d16 100%);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
+  margin-bottom:24px;
+  overflow:hidden;
+  transition:transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+.fr-team-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 24px 56px rgba(0,0,0,0.45);
+}
+/* Top accent glow line */
+.fr-team-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  opacity:0.9;
+  z-index:2;
+}
+
+/* ── HEADER ── */
+.fr-card-header{
+  position:relative;
+  padding:26px 26px 22px;
+  overflow:hidden;
+}
+/* Gradient fill behind header */
+.fr-card-header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:0.11;
+}
+/* Separator line */
+.fr-card-header::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:24px;right:24px;
+  height:1px;
+  background:rgba(255,255,255,0.06);
+}
+/* Watermark */
+.fr-card-watermark{
+  position:absolute;
+  top:-18px;right:18px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:110px;
+  font-weight:800;
+  line-height:1;
+  opacity:0.05;
+  color:#fff;
+  pointer-events:none;
+  user-select:none;
+  letter-spacing:-0.03em;
+}
+.fr-card-header-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  position:relative;
+  z-index:1;
+}
+.fr-card-left{display:flex;align-items:center;gap:16px;}
+
+/* Avatar — bigger, with glow ring */
+.fr-card-avatar{
+  width:60px;height:60px;
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;color:#fff;
+  flex-shrink:0;
+  box-shadow:0 0 0 2px rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.4);
+  position:relative;
+}
+
+.fr-team-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;
+  letter-spacing:0.02em;color:#fff;
+  margin-bottom:8px;line-height:1;
+}
+.fr-team-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.fr-meta-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:999px;
+  padding:4px 11px;
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,0.7);
+  letter-spacing:0.02em;
+}
+/* Rank medal chip */
+.fr-rank-chip-1{background:rgba(245,166,35,0.18)!important;border-color:rgba(245,166,35,0.35)!important;color:#f5a623!important;}
+.fr-rank-chip-2{background:rgba(148,163,184,0.15)!important;border-color:rgba(148,163,184,0.3)!important;color:#cbd5e1!important;}
+.fr-rank-chip-3{background:rgba(205,127,50,0.15)!important;border-color:rgba(205,127,50,0.3)!important;color:#cd7f32!important;}
+
+/* Points badge */
+.fr-points-badge{
+  text-align:right;
+  position:relative;z-index:1;
+  flex-shrink:0;
+}
+.fr-points-badge-val{
+  font-family:'Rajdhani',sans-serif;
+  font-size:44px;font-weight:800;line-height:1;
+  color:#fff;
+  text-shadow:0 0 30px rgba(255,255,255,0.15);
+}
+.fr-points-badge-label{
+  font-size:10px;font-weight:800;letter-spacing:0.14em;
+  text-transform:uppercase;color:rgba(255,255,255,0.45);
+  margin-top:4px;
+}
+
+/* View button */
+.fr-view-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.85);
+  padding:10px 20px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:700;font-size:13px;
+  letter-spacing:0.02em;
+  transition:all 0.18s;
+  position:relative;z-index:1;
+  margin-top:18px;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.fr-view-btn:hover{
+  background:rgba(255,255,255,0.16);
+  border-color:rgba(255,255,255,0.3);
+  color:#fff;
+  transform:translateX(2px);
+}
+
+/* ── BODY ── */
+.fr-card-body{padding:20px 26px 24px;}
+
+/* Stat row */
+.fr-stat-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin-bottom:20px;
+}
+.fr-stat-box{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:14px 8px;
+  text-align:center;
+  transition:background 0.15s, border-color 0.15s;
+  cursor:default;
+}
+.fr-stat-box:hover{
+  background:rgba(255,255,255,0.06);
+  border-color:rgba(255,255,255,0.1);
+}
+.fr-stat-value{
+  font-family:'Rajdhani',sans-serif;
+  font-size:28px;font-weight:800;
+  color:var(--text);line-height:1;margin-bottom:4px;
+}
+.fr-stat-label{
+  font-size:9px;color:var(--muted);
+  letter-spacing:.12em;text-transform:uppercase;font-weight:800;
+}
+
+/* Player table */
+.fr-mini-table-wrap{
+  overflow:auto;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:18px;
+  -webkit-overflow-scrolling:touch;
+  background:rgba(255,255,255,0.015);
+}
+.fr-mini-table-wrap .roles-tbl th{
+  background:rgba(255,255,255,0.025);
+  font-size:10px;
+  padding:11px 16px;
+  letter-spacing:0.12em;
+}
+.fr-mini-table-wrap .roles-tbl td{
+  padding:13px 16px;
+}
+.fr-mini-table-wrap .roles-tbl tr:hover td{
+  background:rgba(255,255,255,0.025);
+}
+.fr-player-rank{
+  font-family:'Rajdhani',sans-serif;
+  font-size:13px;font-weight:700;
+  color:var(--muted);
+  width:28px;text-align:center;
+}
+/* Top scorer row — golden left border + subtle bg */
+.fr-top-scorer td{background:rgba(245,166,35,0.05)!important;}
+.fr-top-scorer td:first-child{border-left:3px solid rgba(245,166,35,0.55);}
+/* Top scorer medal in rank cell */
+.fr-rank-medal{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,#f5a623,#c47a00);
+  font-size:10px;line-height:1;
+}
+
+/* Points bar inside table */
+.fr-pts-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+.fr-pts-bar-track{width:48px;height:4px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;flex-shrink:0;}
+.fr-pts-bar-fill{height:100%;border-radius:999px;transition:width 0.4s ease;}
+.fr-pts-val{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:800;min-width:32px;text-align:right;}
+
+/* ── PER-FRANCHISE ACCENT COLOURS ── */
+/* Bhavya — Gold */
+.fr-accent-bhavya::before{background:linear-gradient(90deg,#f5a623,#e08c00);}
+.fr-accent-bhavya:hover{border-color:rgba(245,166,35,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(245,166,35,0.1);}
+.fr-accent-bhavya .fr-card-header::before{background:linear-gradient(135deg,#f5a623,#e08c00);}
+.fr-accent-bhavya .fr-card-header{background:linear-gradient(160deg,rgba(245,166,35,0.14) 0%,rgba(224,140,0,0.04) 100%);}
+.fr-accent-bhavya .fr-card-avatar{background:linear-gradient(135deg,#f5a623,#c47a00);}
+.fr-accent-bhavya .fr-points-badge-val{color:#fbbf46;}
+
+/* Darshil — Blue */
+.fr-accent-darshil::before{background:linear-gradient(90deg,#4cc9f0,#2089c0);}
+.fr-accent-darshil:hover{border-color:rgba(76,201,240,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(76,201,240,0.1);}
+.fr-accent-darshil .fr-card-header::before{background:linear-gradient(135deg,#4cc9f0,#2089c0);}
+.fr-accent-darshil .fr-card-header{background:linear-gradient(160deg,rgba(76,201,240,0.14) 0%,rgba(32,137,192,0.04) 100%);}
+.fr-accent-darshil .fr-card-avatar{background:linear-gradient(135deg,#4cc9f0,#1a7ab8);}
+.fr-accent-darshil .fr-points-badge-val{color:#6dd4f5;}
+
+/* Hersh — Teal */
+.fr-accent-hersh::before{background:linear-gradient(90deg,#06d6a0,#038a66);}
+.fr-accent-hersh:hover{border-color:rgba(6,214,160,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(6,214,160,0.1);}
+.fr-accent-hersh .fr-card-header::before{background:linear-gradient(135deg,#06d6a0,#038a66);}
+.fr-accent-hersh .fr-card-header{background:linear-gradient(160deg,rgba(6,214,160,0.14) 0%,rgba(3,138,102,0.04) 100%);}
+.fr-accent-hersh .fr-card-avatar{background:linear-gradient(135deg,#06d6a0,#027a5a);}
+.fr-accent-hersh .fr-points-badge-val{color:#2ee8b4;}
+
+/* Jash — Purple */
+.fr-accent-jash::before{background:linear-gradient(90deg,#c084fc,#8040c8);}
+.fr-accent-jash:hover{border-color:rgba(192,132,252,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(192,132,252,0.1);}
+.fr-accent-jash .fr-card-header::before{background:linear-gradient(135deg,#c084fc,#8040c8);}
+.fr-accent-jash .fr-card-header{background:linear-gradient(160deg,rgba(192,132,252,0.14) 0%,rgba(128,64,200,0.04) 100%);}
+.fr-accent-jash .fr-card-avatar{background:linear-gradient(135deg,#c084fc,#7c3aed);}
+.fr-accent-jash .fr-points-badge-val{color:#d4a0ff;}
+
+/* Karan — Red */
+.fr-accent-karan::before{background:linear-gradient(90deg,#ef476f,#b81040);}
+.fr-accent-karan:hover{border-color:rgba(239,71,111,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(239,71,111,0.1);}
+.fr-accent-karan .fr-card-header::before{background:linear-gradient(135deg,#ef476f,#b81040);}
+.fr-accent-karan .fr-card-header{background:linear-gradient(160deg,rgba(239,71,111,0.14) 0%,rgba(184,16,64,0.04) 100%);}
+.fr-accent-karan .fr-card-avatar{background:linear-gradient(135deg,#ef476f,#a00838);}
+.fr-accent-karan .fr-points-badge-val{color:#f47090;}
+
+/* Prajin — Pink */
+.fr-accent-prajin::before{background:linear-gradient(90deg,#ff6482,#d02050);}
+.fr-accent-prajin:hover{border-color:rgba(255,100,130,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(255,100,130,0.1);}
+.fr-accent-prajin .fr-card-header::before{background:linear-gradient(135deg,#ff6482,#d02050);}
+.fr-accent-prajin .fr-card-header{background:linear-gradient(160deg,rgba(255,100,130,0.14) 0%,rgba(208,32,80,0.04) 100%);}
+.fr-accent-prajin .fr-card-avatar{background:linear-gradient(135deg,#ff6482,#c01848);}
+.fr-accent-prajin .fr-points-badge-val{color:#ff8aa0;}
+
+/* Sanket — Green */
+.fr-accent-sanket::before{background:linear-gradient(90deg,#40c9a2,#1a9070);}
+.fr-accent-sanket:hover{border-color:rgba(64,201,162,0.25);box-shadow:0 24px 56px rgba(0,0,0,0.45),0 0 0 1px rgba(64,201,162,0.1);}
+.fr-accent-sanket .fr-card-header::before{background:linear-gradient(135deg,#40c9a2,#1a9070);}
+.fr-accent-sanket .fr-card-header{background:linear-gradient(160deg,rgba(64,201,162,0.14) 0%,rgba(26,144,112,0.04) 100%);}
+.fr-accent-sanket .fr-card-avatar{background:linear-gradient(135deg,#40c9a2,#0e7a5a);}
+.fr-accent-sanket .fr-points-badge-val{color:#5de0bc;}
+
+@media(max-width:740px){
+  .fr-team-card{border-radius:20px;margin-bottom:16px;}
+  .fr-card-header{padding:18px 18px 16px;}
+  .fr-card-body{padding:14px 18px 18px;}
+  .fr-card-avatar{width:46px;height:46px;font-size:17px;border-radius:14px;}
+  .fr-team-name{font-size:24px;}
+  .fr-points-badge-val{font-size:34px;}
+  .fr-stat-row{grid-template-columns:repeat(5,1fr);gap:6px;}
+  .fr-stat-box{padding:10px 4px;}
+  .fr-stat-value{font-size:22px;}
+  .fr-stat-label{font-size:9px;}
+  .fr-card-watermark{font-size:64px;}
+}
 
 </style>
 
@@ -858,6 +1213,7 @@ window.__firebaseReadyPromise = (async function(){
     <div class="sb-section">
       <div class="sb-sec-hdr" onclick="toggleSection('s-dash')"><span class="sb-sec-ico">&#9638;</span><span class="sb-sec-label">League</span><span class="sb-chev" id="chev-s-dash">&#9662;</span></div>
       <div class="sb-items" id="s-dash">
+        <button class="sb-item" id="ni-leaguedashboard" onclick="go('leaguedashboard',this)"><span class="sb-item-ico">🏠</span>Dashboard</button>
         <button class="sb-item" id="ni-leaderboard" onclick="go('leaderboard',this)"><span class="sb-item-ico">&#127942;</span>Leaderboard</button>
         <button class="sb-item" id="ni-pointschart" onclick="go('pointschart',this)"><span class="sb-item-ico">&#8599;</span>Points Chart</button>
         <button class="sb-item" id="ni-franchisepoints" onclick="go('franchisepoints',this)"><span class="sb-item-ico">&#9645;</span>Match-wise - Franchise Wise Points</button>
@@ -928,7 +1284,43 @@ window.__firebaseReadyPromise = (async function(){
 <main class="main-wrap" id="mainWrap">
 
   
-  <div class="page" id="page-leaguedashboard"><div class="page-hdr"><h2>League</h2><p>League shortcuts moved to the sidebar.</p></div><div class="coming-soon"><h3>League</h3><p>Use the League menu items to open leaderboard, charts, franchise points, and predictions.</p></div></div>
+  <div class="page active" id="page-leaguedashboard">
+    <!-- HERO STRIP -->
+    <div class="db-hero">
+      <div class="db-hero-left">
+        <div class="db-hero-eyebrow">IPL Fantasy 2026</div>
+        <div class="db-hero-title">League Dashboard</div>
+        <div class="db-hero-sub" id="dbMatchCount">Loading...</div>
+      </div>
+      <div class="db-hero-right" id="dbSeasonStatus"></div>
+    </div>
+
+    <!-- LEADERBOARD STANDINGS -->
+    <div class="db-section-label">🏆 Standings</div>
+    <div id="dbStandings" class="db-standings"></div>
+
+    <!-- TWO COLUMN: Mini Chart + My Squad -->
+    <div class="db-two-col">
+      <!-- POINTS CHART -->
+      <div class="db-card db-chart-card">
+        <div class="db-card-title">Cumulative Points</div>
+        <div class="db-chart-legend" id="dbChartLegend"></div>
+        <div class="db-chart-wrap">
+          <svg id="dbChartSvg" class="db-chart-svg" viewBox="0 0 560 220" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+
+      <!-- MY SQUAD / ALL FRANCHISES MINI -->
+      <div class="db-card db-squads-card">
+        <div class="db-card-title">All Franchises</div>
+        <div id="dbSquadsList" class="db-squads-list"></div>
+      </div>
+    </div>
+
+    <!-- RECENT MATCH POINTS -->
+    <div class="db-section-label">📊 Last Match — Top Performers</div>
+    <div id="dbTopPerformers" class="db-performers-grid"></div>
+  </div>
   <div class="page" id="page-leaderboard">
     <div class="page-hdr"><h2>Leaderboard</h2><p>Player points plus season-end prediction bonus.</p></div>
     <div id="leaderboardTopCards" class="leader-top-grid"></div>
@@ -1083,7 +1475,7 @@ window.__firebaseReadyPromise = (async function(){
   </div>
 
   <!-- ALL PLAYERS -->
-  <div class="page active" id="page-allplayers">
+  <div class="page" id="page-allplayers">
     <div class="page-hdr"><h2>All Players</h2><p id="playerCount">251 players</p></div>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:16px;">
       <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
@@ -1261,7 +1653,7 @@ var PLAYERS = [
   {name:"Ashwani Kumar",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Atharva Ankolekar",role:"AR",origin:"IND",iplTeam:"MI",franchise:""},
   {name:"Auqib Nabi",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Bhavya"},
-  {name:"Avesh Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Hersh"},
+  {name:"Avesh Khan",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
   {name:"Axar Patel",role:"AR",origin:"IND",iplTeam:"DC",franchise:"Jash"},
   {name:"Ayush Badoni",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:"Jash"},
   {name:"Ayush Mhatre",role:"BAT",origin:"IND",iplTeam:"CSK",franchise:"Jash"},
@@ -1270,7 +1662,7 @@ var PLAYERS = [
   {name:"Ben Dwarshuis",role:"BOWL",origin:"OVS",iplTeam:"PBKS",franchise:""},
   {name:"Bhuvneshwar Kumar",role:"BOWL",origin:"IND",iplTeam:"RCB",franchise:"Hersh"},
   {name:"Blessing Muzarabani",role:"BOWL",origin:"OVS",iplTeam:"KKR",franchise:"Darshil"},
-  {name:"Brijesh Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:""},
+  {name:"Brijesh Sharma",role:"BOWL",origin:"IND",iplTeam:"RR",franchise:"Hersh"},
   {name:"Brydon Carse",role:"AR",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Cameron Green",role:"AR",origin:"OVS",iplTeam:"KKR",franchise:"Karan"},
   {name:"Cooper Connolly",role:"AR",origin:"OVS",iplTeam:"PBKS",franchise:"Hersh"},
@@ -1283,8 +1675,8 @@ var PLAYERS = [
   {name:"Devdutt Padikkal",role:"BAT",origin:"IND",iplTeam:"RCB",franchise:"Karan"},
   {name:"Dewald Brevis",role:"BAT",origin:"OVS",iplTeam:"CSK",franchise:"Sanket"},
   {name:"Dhruv Jurel",role:"WK",origin:"IND",iplTeam:"RR",franchise:"Bhavya"},
-  {name:"Digvesh Rathi",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:"Karan"},
-  {name:"Donovan Ferreira",role:"AR",origin:"OVS",iplTeam:"RR",franchise:""},
+  {name:"Digvesh Rathi",role:"BOWL",origin:"IND",iplTeam:"LSG",franchise:""},
+  {name:"Donovan Ferreira",role:"AR",origin:"OVS",iplTeam:"RR",franchise:"Karan"},
   {name:"Dushmantha Chameera",role:"BOWL",origin:"OVS",iplTeam:"DC",franchise:""},
   {name:"Eshan Malinga",role:"BOWL",origin:"OVS",iplTeam:"SRH",franchise:""},
   {name:"Finn Allen",role:"BAT",origin:"OVS",iplTeam:"KKR",franchise:"Prajin"},
@@ -1295,7 +1687,7 @@ var PLAYERS = [
   {name:"Harnoor Singh",role:"BAT",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Harpreet Brar",role:"BOWL",origin:"IND",iplTeam:"PBKS",franchise:""},
   {name:"Harsh Dubey",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
-  {name:"Harshal Patel",role:"AR",origin:"IND",iplTeam:"SRH",franchise:"Sanket"},
+  {name:"Harshal Patel",role:"AR",origin:"IND",iplTeam:"SRH",franchise:""},
   {name:"Harshit Rana",role:"BOWL",origin:"IND",iplTeam:"KKR",franchise:""},
   {name:"Heinrich Klaasen",role:"WK",origin:"OVS",iplTeam:"SRH",franchise:"Prajin"},
   {name:"Himmat Singh",role:"BAT",origin:"IND",iplTeam:"LSG",franchise:""},
@@ -1308,7 +1700,7 @@ var PLAYERS = [
   {name:"Jason Holder",role:"AR",origin:"OVS",iplTeam:"GT",franchise:"Hersh"},
   {name:"Jasprit Bumrah",role:"BOWL",origin:"IND",iplTeam:"MI",franchise:"Karan"},
   {name:"Jayant Yadav",role:"BOWL",origin:"IND",iplTeam:"GT",franchise:""},
-  {name:"Jaydev Unadkat",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:""},
+  {name:"Jaydev Unadkat",role:"BOWL",origin:"IND",iplTeam:"SRH",franchise:"Sanket"},
   {name:"Jitesh Sharma",role:"WK",origin:"IND",iplTeam:"RCB",franchise:"Jash"},
   {name:"Jofra Archer",role:"BOWL",origin:"OVS",iplTeam:"RR",franchise:"Jash"},
   {name:"Jordan Cox",role:"BAT",origin:"OVS",iplTeam:"RCB",franchise:""},
@@ -1633,6 +2025,7 @@ function go(page, btn) {
   if (page === 'waivers') renderWaiverOpenPage();
   if (page === 'mybids') renderWaiverMyBidsPage();
   if (page === 'transfers') renderWaiverTransfersPage();
+  if (page === 'leaguedashboard') initDashboard();
 }
 
 // ---- HELPERS ----
@@ -1664,77 +2057,237 @@ var FRANCHISES = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
 var FRANCHISE_COLORS = {Bhavya:'#f5a623',Darshil:'#4cc9f0',Hersh:'#06d6a0',Jash:'#c084fc',Karan:'#ef476f',Prajin:'#ff6482',Sanket:'#40c9a2'};
 
 
+// Sum all points for a player across all matches from POINTS_DATA
+function getPlayerPoints(playerName) {
+  var total = 0;
+  for (var i = 0; i < POINTS_DATA.length; i++) {
+    if (POINTS_DATA[i].player === playerName) {
+      total += Number(POINTS_DATA[i].points || 0);
+    }
+  }
+  return total;
+}
+
+// ---- DASHBOARD ----
+function initDashboard() {
+  renderDBHero();
+  renderDBStandings();
+  renderDBChart();
+  renderDBSquads();
+  renderDBTopPerformers();
+}
+
+function renderDBHero() {
+  var matchNos = [];
+  POINTS_DATA.forEach(function(r){ if(r.matchNo && matchNos.indexOf(r.matchNo)===-1) matchNos.push(r.matchNo); });
+  matchNos.sort(function(a,b){ return a-b; });
+  var played = matchNos.length;
+  var total = SCHEDULE ? SCHEDULE.length : 70;
+  var remaining = total - played;
+  var sub = document.getElementById('dbMatchCount');
+  if(sub) sub.textContent = played + ' matches played · ' + remaining + ' remaining · ' + total + ' total';
+  var right = document.getElementById('dbSeasonStatus');
+  if(right) right.innerHTML = '<div class="db-season-pill"><div class="db-season-dot"></div>Season Live</div>';
+}
+
+function getLeaderboardData() {
+  var playerTotals = {};
+  FRANCHISE_ORDER.forEach(function(n){ playerTotals[n] = 0; });
+  POINTS_DATA.forEach(function(r){
+    if(r.franchise && r.franchise !== '-' && playerTotals.hasOwnProperty(r.franchise))
+      playerTotals[r.franchise] += Number(r.points || 0);
+  });
+  var rows = FRANCHISE_ORDER.map(function(name){
+    var playerPts = Number(playerTotals[name] || 0);
+    var bonus = getPredictionBonus(name);
+    return { name:name, playerPts:playerPts, bonus:bonus, total:playerPts+bonus };
+  });
+  rows.sort(function(a,b){ return b.total-a.total || b.playerPts-a.playerPts || a.name.localeCompare(b.name); });
+  return rows;
+}
+
+function renderDBStandings() {
+  var wrap = document.getElementById('dbStandings');
+  if(!wrap) return;
+  var rows = getLeaderboardData();
+  var maxPts = rows.length ? rows[0].total : 1;
+  wrap.innerHTML = rows.map(function(r, idx){
+    var rank = idx + 1;
+    var rankCls = rank <= 3 ? ' db-rank-'+rank : '';
+    var swatch = FRANCHISE_SWATCH[r.name] || '#4cc9f0';
+    var pct = maxPts ? Math.round((r.total / maxPts) * 100) : 0;
+    var medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+    var squadSize = getPlayersForFranchise(r.name).length;
+    return '<div class="db-standing-row'+rankCls+'" onclick="openFranchise(\''+escapeAttr(r.name)+'\')">' +
+      '<div class="db-rank-num">' + (typeof medal === 'string' ? medal : '#'+rank) + '</div>' +
+      '<div class="db-standing-avatar" style="background:'+swatch+';">'+escapeHtml(r.name.substring(0,2).toUpperCase())+'</div>' +
+      '<div class="db-standing-name">'+escapeHtml(r.name)+'<div style="font-size:11px;color:var(--muted);font-weight:500;margin-top:2px;">'+squadSize+' players</div></div>' +
+      '<div class="db-standing-pts">'+r.total+'</div>' +
+      '<div class="db-standing-bar-wrap"><div class="db-standing-bar" style="width:'+pct+'%;background:'+swatch+';"></div></div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderDBChart() {
+  var svg = document.getElementById('dbChartSvg');
+  var legend = document.getElementById('dbChartLegend');
+  if(!svg || !legend) return;
+  var matchNos = [];
+  POINTS_DATA.forEach(function(r){ var n=Number(r.matchNo||0); if(n && matchNos.indexOf(n)===-1) matchNos.push(n); });
+  matchNos.sort(function(a,b){ return a-b; });
+  if(!matchNos.length){ svg.innerHTML='<text x="280" y="110" text-anchor="middle" fill="#4a5568" font-size="13">No match data yet</text>'; return; }
+  var byMatchFr={};
+  POINTS_DATA.forEach(function(r){ if(!r.franchise||r.franchise==='-') return; var k=r.franchise+'||'+r.matchNo; byMatchFr[k]=(byMatchFr[k]||0)+Number(r.points||0); });
+  var series={}; var allY=[];
+  FRANCHISE_ORDER.forEach(function(name){ var run=0; series[name]=[]; matchNos.forEach(function(no){ run+=Number(byMatchFr[name+'||'+no]||0); series[name].push({x:no,y:run}); allY.push(run); }); });
+  var maxY=Math.max.apply(null,allY.concat([10]));
+  var w=560,h=220,ml=40,mr=8,mt=10,mb=28,pw=w-ml-mr,ph=h-mt-mb;
+  function xS(x){ return matchNos.length===1?ml+pw/2:ml+((x-matchNos[0])/(matchNos[matchNos.length-1]-matchNos[0]))*pw; }
+  function yS(y){ return mt+ph-((y/(maxY||1))*ph); }
+  var grid='';
+  for(var i=0;i<4;i++){ var yv=Math.round(maxY*i/3); var yp=yS(yv); grid+='<line x1="'+ml+'" y1="'+yp+'" x2="'+(w-mr)+'" y2="'+yp+'" stroke="rgba(255,255,255,.06)" stroke-width="1"/>'; grid+='<text x="'+(ml-6)+'" y="'+(yp+4)+'" text-anchor="end" fill="#4a5568" font-size="10">'+yv+'</text>'; }
+  grid+='<line x1="'+ml+'" y1="'+mt+'" x2="'+ml+'" y2="'+(h-mb)+'" stroke="rgba(255,255,255,.12)" stroke-width="1"/>';
+  var xLabels = matchNos.map(function(no){ return '<text x="'+xS(no)+'" y="'+(h-8)+'" text-anchor="middle" fill="#4a5568" font-size="10">M'+no+'</text>'; }).join('');
+  var lines='';
+  FRANCHISE_ORDER.forEach(function(name){
+    var col = FRANCHISE_SWATCH[name];
+    var pts = series[name];
+    if(!pts.length) return;
+    var d = pts.map(function(p,i){ return (i?'L':'M')+xS(p.x).toFixed(1)+' '+yS(p.y).toFixed(1); }).join(' ');
+    lines += '<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    lines += pts.map(function(p){ return '<circle cx="'+xS(p.x).toFixed(1)+'" cy="'+yS(p.y).toFixed(1)+'" r="3.5" fill="'+col+'" stroke="#080d16" stroke-width="1.5"><title>'+escapeHtml(name)+' · M'+p.x+' · '+p.y+' pts</title></circle>'; }).join('');
+  });
+  svg.innerHTML = grid + xLabels + lines;
+  legend.innerHTML = FRANCHISE_ORDER.map(function(name){
+    return '<span class="db-chart-legend-item"><span class="db-chart-legend-dot" style="background:'+FRANCHISE_SWATCH[name]+';"></span>'+escapeHtml(name)+'</span>';
+  }).join('');
+}
+
+function renderDBSquads() {
+  var wrap = document.getElementById('dbSquadsList');
+  if(!wrap) return;
+  var lbRows = getLeaderboardData();
+  wrap.innerHTML = lbRows.map(function(r){
+    var swatch = FRANCHISE_SWATCH[r.name] || '#4cc9f0';
+    var count = getPlayersForFranchise(r.name).length;
+    return '<div class="db-squad-row" onclick="openFranchise(\''+escapeAttr(r.name)+'\')">' +
+      '<div class="db-squad-avatar" style="background:'+swatch+';">'+escapeHtml(r.name.substring(0,2).toUpperCase())+'</div>' +
+      '<div class="db-squad-name">'+escapeHtml(r.name)+'</div>' +
+      '<div class="db-squad-count">'+count+' players</div>' +
+      '<div class="db-squad-pts">'+r.total+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderDBTopPerformers() {
+  var wrap = document.getElementById('dbTopPerformers');
+  if(!wrap) return;
+  var matchNos = [];
+  POINTS_DATA.forEach(function(r){ if(r.matchNo && matchNos.indexOf(r.matchNo)===-1) matchNos.push(r.matchNo); });
+  if(!matchNos.length){ wrap.innerHTML = '<div style="color:var(--muted);font-size:14px;padding:20px;">No match data yet.</div>'; return; }
+  var lastMatch = Math.max.apply(null, matchNos);
+  var lastRows = POINTS_DATA.filter(function(r){ return r.matchNo === lastMatch && r.points > 0; });
+  lastRows.sort(function(a,b){ return b.points - a.points; });
+  var top = lastRows.slice(0, 8);
+  var matchName = lastRows.length ? lastRows[0].match : 'Match '+lastMatch;
+  // Update section label
+  var label = wrap.previousElementSibling;
+  if(label && label.classList.contains('db-section-label')) {
+    label.textContent = 'Last Match — ' + matchName + ' — Top Performers';
+  }
+  wrap.innerHTML = top.map(function(r){
+    var swatch = r.franchise && r.franchise !== '-' ? (FRANCHISE_SWATCH[r.franchise] || 'var(--teal)') : 'var(--muted)';
+    var franchise = r.franchise && r.franchise !== '-' ? r.franchise : 'Unpicked';
+    return '<div class="db-performer-card" onclick="openPlayerDrawer(\''+escapeAttr(r.player)+'\')">' +
+      '<div class="db-performer-name">'+escapeHtml(r.player)+'</div>' +
+      '<div class="db-performer-meta">'+escapeHtml(r.team)+' · '+escapeHtml(r.role)+' · <span style="color:'+swatch+';">'+escapeHtml(franchise)+'</span></div>' +
+      '<div class="db-performer-pts" style="color:'+swatch+';">'+r.points+'</div>' +
+      '<div class="db-performer-label">match pts</div>' +
+    '</div>';
+  }).join('');
+}
+
 function initAllFranchises() {
   var wrap = document.getElementById('allFranchisesWrap');
   if (!wrap) return;
-
   wrap.innerHTML = '';
+
+  var ACCENT = {
+    Bhavya:'bhavya', Darshil:'darshil', Hersh:'hersh',
+    Jash:'jash', Karan:'karan', Prajin:'prajin', Sanket:'sanket'
+  };
 
   for (var f = 0; f < FRANCHISES.length; f++) {
     (function(name) {
+      // Pull purely from PLAYERS master list — sorted by role then name
       var players = getPlayersForFranchise(name).slice().sort(function(a,b){
-        return (getPlayerPoints(b.name) || 0) - (getPlayerPoints(a.name) || 0) || a.name.localeCompare(b.name);
+        var order = {WK:0, BAT:1, AR:2, BOWL:3};
+        var ra = order[a.role] !== undefined ? order[a.role] : 4;
+        var rb = order[b.role] !== undefined ? order[b.role] : 4;
+        return ra - rb || a.name.localeCompare(b.name);
       });
-      var totalPts = players.reduce(function(sum, p){ return sum + (getPlayerPoints(p.name) || 0); }, 0);
 
-      function countRole(role){
-        return players.filter(function(p){ return p.role === role; }).length;
-      }
-      function countOrigin(origin){
-        return players.filter(function(p){ return p.origin === origin; }).length;
-      }
+      var accent = ACCENT[name] || 'bhavya';
+
+      function countRole(role){ return players.filter(function(p){ return p.role === role; }).length; }
+      function countOrigin(origin){ return players.filter(function(p){ return p.origin === origin; }).length; }
 
       var card = document.createElement('div');
-      card.className = 'fr-team-card';
+      card.className = 'fr-team-card fr-accent-' + accent;
 
+      // Player rows — no points column
       var rowsHtml = '';
       for (var i = 0; i < players.length; i++) {
         var p = players[i];
+        var roleCls = p.role === 'BAT' ? 'role-badge bat' : p.role === 'BOWL' ? 'role-badge bowl' : p.role === 'AR' ? 'role-badge ar' : 'role-badge wk';
+        var origBadge = p.origin === 'IND' ? '<span class="type-badge ind">IND</span>' : '<span class="type-badge ovs">OVS</span>';
         rowsHtml += '<tr>' +
-          '<td style="font-weight:700;color:var(--text);">' + p.name + '</td>' +
-          '<td>' + (p.iplTeam || '-') + '</td>' +
-          '<td><span class="' + (p.role === 'BAT' ? 'role-badge bat' : p.role === 'BOWL' ? 'role-badge bowl' : p.role === 'AR' ? 'role-badge ar' : 'role-badge wk') + '">' + p.role + '</span></td>' +
-          '<td>' + (p.origin === 'IND' ? '<span class="type-badge ind">IND</span>' : '<span class="type-badge ovs">OVS</span>') + '</td>' +
-          '<td style="text-align:right;font-weight:800;color:#ff00ff;">' + (getPlayerPoints(p.name) || 0) + '</td>' +
+          '<td class="fr-player-rank">' + (i+1) + '</td>' +
+          '<td style="font-weight:600;color:var(--text);">' + escapeHtml(p.name) + '</td>' +
+          '<td style="color:var(--text2);font-size:13px;">' + escapeHtml(p.iplTeam || '-') + '</td>' +
+          '<td><span class="' + roleCls + '">' + p.role + '</span></td>' +
+          '<td>' + origBadge + '</td>' +
         '</tr>';
       }
 
       card.innerHTML =
-        '<div class="fr-team-top">' +
-          '<div>' +
-            '<div class="fr-team-name">' + name + '</div>' +
-            '<div class="fr-team-meta">' +
-              '<span>' + name.substring(0,3).toUpperCase() + '</span>' +
-              '<span>•</span>' +
-              '<span>' + players.length + ' players</span>' +
-              '<span>•</span>' +
-              '<span class="fr-team-points">' + totalPts + ' pts</span>' +
+        '<div class="fr-card-header">' +
+          '<div class="fr-card-watermark">' + name.substring(0,3).toUpperCase() + '</div>' +
+          '<div class="fr-card-header-top">' +
+            '<div class="fr-card-left">' +
+              '<div class="fr-card-avatar">' + name.substring(0,2).toUpperCase() + '</div>' +
+              '<div>' +
+                '<div class="fr-team-name">' + escapeHtml(name) + '</div>' +
+                '<div class="fr-team-meta">' +
+                  '<span class="fr-meta-chip">' + players.length + ' players</span>' +
+                  '<span class="fr-meta-chip">' + countOrigin('OVS') + ' overseas</span>' +
+                '</div>' +
+              '</div>' +
             '</div>' +
           '</div>' +
-          '<button class="fr-view-btn" onclick="openFranchise(\'' + name.replace(/'/g, "\'") + '\')">View Franchise</button>' +
+          '<button class="fr-view-btn" onclick="openFranchise(\'' + name.replace(/'/g, "\\'") + '\')">View Points ›</button>' +
         '</div>' +
 
-        '<div class="fr-stat-row">' +
-          '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('BAT') + '</div><div class="fr-stat-label">BAT</div></div>' +
-          '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('BOWL') + '</div><div class="fr-stat-label">BOWL</div></div>' +
-          '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('AR') + '</div><div class="fr-stat-label">AR</div></div>' +
-          '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('WK') + '</div><div class="fr-stat-label">WK</div></div>' +
-          '<div class="fr-stat-box"><div class="fr-stat-value">' + countOrigin('OVS') + '</div><div class="fr-stat-label">OVS</div></div>' +
-        '</div>' +
-
-        '<div class="fr-mini-table-wrap">' +
-          '<table class="roles-tbl">' +
-            '<thead>' +
-              '<tr>' +
+        '<div class="fr-card-body">' +
+          '<div class="fr-stat-row">' +
+            '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('BAT') + '</div><div class="fr-stat-label">BAT</div></div>' +
+            '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('BOWL') + '</div><div class="fr-stat-label">BOWL</div></div>' +
+            '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('AR') + '</div><div class="fr-stat-label">AR</div></div>' +
+            '<div class="fr-stat-box"><div class="fr-stat-value">' + countRole('WK') + '</div><div class="fr-stat-label">WK</div></div>' +
+            '<div class="fr-stat-box"><div class="fr-stat-value">' + countOrigin('OVS') + '</div><div class="fr-stat-label">OVS</div></div>' +
+          '</div>' +
+          '<div class="fr-mini-table-wrap">' +
+            '<table class="roles-tbl">' +
+              '<thead><tr>' +
+                '<th style="width:28px;">#</th>' +
                 '<th>Player</th>' +
                 '<th>IPL Team</th>' +
                 '<th>Role</th>' +
                 '<th>Type</th>' +
-                '<th style="text-align:right;">Points</th>' +
-              '</tr>' +
-            '</thead>' +
-            '<tbody>' + rowsHtml + '</tbody>' +
-          '</table>' +
+              '</tr></thead>' +
+              '<tbody>' + rowsHtml + '</tbody>' +
+            '</table>' +
+          '</div>' +
         '</div>';
 
       wrap.appendChild(card);
@@ -1876,22 +2429,11 @@ function renderPlayersGrid(players) {
 function openPlayerModal(idx) {
   var p = window._filteredPlayers ? window._filteredPlayers[idx] : PLAYERS[idx];
   if (!p) return;
-  document.getElementById('pmAvatar').textContent = p.name.charAt(0).toUpperCase();
-  document.getElementById('pmName').textContent = p.name;
-  document.getElementById('pmSeasonPts').textContent = '0';
-  var roleStyle = ROLE_STYLE[p.role] || '';
-  var roleLabel = ROLE_LABEL[p.role] || p.role;
-  document.getElementById('pmBadges').innerHTML = '<span style="' + roleStyle + ';display:inline-block;border-radius:50px;padding:4px 12px;font-size:12px;font-weight:700;">' + roleLabel + '</span><span style="background:#161f30;color:#94a3b8;border:1px solid rgba(255,255,255,0.12);display:inline-block;border-radius:50px;padding:4px 12px;font-size:12px;font-weight:700;">' + p.iplTeam + '</span>' + originBadge(p.origin);
-  document.getElementById('pmMeta').textContent = (p.franchise || 'Unassigned');
-  var bowlSec = document.getElementById('pmBowlingSection');
-  if (bowlSec) bowlSec.style.display = (p.role==='BOWL'||p.role==='AR') ? '' : 'none';
-  switchPMTab('overview');
-  renderH2HList('');
-  document.getElementById('playerModal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  openPlayerDrawer(p.name);
 }
 
 function closePlayerModal() {
+  closePlayerDrawer();
   document.getElementById('playerModal').style.display = 'none';
   document.body.style.overflow = '';
 }
@@ -1916,14 +2458,7 @@ function pmStatBox(val, label, sub) {
 }
 
 function renderPMOverview() {
-  var fg = document.getElementById('pmFantasyGrid');
-  if (fg) fg.innerHTML = pmStatBox('0','Total Points')+pmStatBox('0','Avg / Match')+pmStatBox('0','Best Score')+pmStatBox('0','Worst Score')+pmStatBox('0','Matches Played')+pmStatBox('0','DNP','Did not play');
-  var bg = document.getElementById('pmBattingGrid');
-  if (bg) bg.innerHTML = pmStatBox('0','Runs')+pmStatBox('0','Balls')+pmStatBox('0.0','Strike Rate')+pmStatBox('0.0','Average')+pmStatBox('0','Fours')+pmStatBox('0','Sixes')+pmStatBox('0','Fifties')+pmStatBox('0','Centuries')+pmStatBox('0','Ducks');
-  var bwg = document.getElementById('pmBowlingGrid');
-  if (bwg) bwg.innerHTML = pmStatBox('0','Wickets')+pmStatBox('0','Overs')+pmStatBox('0.0','Economy')+pmStatBox('0','Dot Balls')+pmStatBox('0','Maidens')+pmStatBox('0','3W+ Hauls');
-  var fldg = document.getElementById('pmFieldingGrid');
-  if (fldg) fldg.innerHTML = pmStatBox('0','Catches')+pmStatBox('0','Stumpings')+pmStatBox('0','Run-outs');
+  // no-op — modal now delegates to drawer
 }
 
 function filterH2H() { renderH2HList(document.getElementById('h2hSearch').value); }
@@ -2391,9 +2926,14 @@ function renderScoring() {
 // ---- INIT ----
 window.addEventListener('DOMContentLoaded', function() {
   renderScoring();
-  initPlayers();
+  initDashboard();
   var mw = document.getElementById('mainWrap');
   if (mw) mw.scrollTop = 0;
+  // Set dashboard as active in sidebar
+  var btn = document.getElementById('ni-leaguedashboard');
+  if(btn) btn.classList.add('active');
+  // Set bottom tab
+  if(typeof setBottomTab === 'function') setBottomTab('leaderboard');
 });
 
 
@@ -2724,7 +3264,7 @@ function uniqueIplTeamsOptions(){
   var _origGo = window.go;
   window.go = function(page, btn){
     _origGo(page, btn);
-    var map = {leaderboard:'leaderboard',pointschart:'leaderboard',franchisepoints:'leaderboard',predictions:'leaderboard',franchiseplayerpoints:'leaderboard',
+    var map = {leaguedashboard:'leaderboard',leaderboard:'leaderboard',pointschart:'leaderboard',franchisepoints:'leaderboard',predictions:'leaderboard',franchiseplayerpoints:'leaderboard',
                allfranchises:'allfranchises',myteam:'allfranchises',franchiseplayerboard:'allfranchises',
                waivers:'waivers',mybids:'waivers',transfers:'waivers',propose:'waivers',tradeoffers:'waivers',alltrades:'waivers',
                pointsreport:'pointsreport',playerstats:'pointsreport',allschedules:'pointsreport'};
@@ -2934,7 +3474,7 @@ function buildTrendHtml(detail) {
 
 function renderPlayerDrawerTab() {
   if (!currentPlayerDetailName) return;
-  var detail = PLAYER_DETAIL_DATA[currentPlayerDetailName];
+  var detail = PLAYER_DETAIL_DATA[currentPlayerDetailName] || window._currentDrawerDetail;
   if (!detail) return;
   var activeTab = document.querySelector('.player-drawer-tab.active');
   var tab = activeTab ? activeTab.getAttribute('data-tab') : 'overview';
@@ -2957,15 +3497,56 @@ function switchPlayerTab(tab, btn) {
 
 function openPlayerDrawer(playerName) {
   var detail = PLAYER_DETAIL_DATA[playerName];
-  if (!detail) return;
-  currentPlayerDetailName = playerName;
   var meta = getPlayerMetaByName(playerName) || {};
+
+  // If not in PLAYER_DETAIL_DATA, build a summary from POINTS_DATA
+  if (!detail) {
+    var rows = POINTS_DATA.filter(function(r){ return r.player === playerName; });
+    if (!rows.length) {
+      // Player exists in PLAYERS master but has no points data yet
+      detail = {
+        player: playerName,
+        role: meta.role || '-',
+        team: meta.iplTeam || '-',
+        franchise: meta.franchise || '-',
+        totalPoints: 0, battingPoints: 0, fieldingPoints: 0, bowlingPoints: 0,
+        runs: 0, balls: 0, fours: 0, sixes: 0, strikeRate: 0, ducks: 0,
+        r30: 0, r50: 0, r75: 0, r100: 0,
+        dotBalls: 0, maidens: 0, wickets: 0, threeW: 0, economyRate: 0,
+        matchesPlayed: 0, playedMatches: []
+      };
+    } else {
+      // Aggregate from POINTS_DATA rows
+      var totalPts = rows.reduce(function(s,r){ return s + Number(r.points||0); }, 0);
+      detail = {
+        player: playerName,
+        role: rows[0].role || meta.role || '-',
+        team: rows[0].team || meta.iplTeam || '-',
+        franchise: rows[0].franchise || meta.franchise || '-',
+        totalPoints: totalPts,
+        battingPoints: 0, fieldingPoints: 0, bowlingPoints: 0,
+        runs: 0, balls: 0, fours: 0, sixes: 0, strikeRate: 0, ducks: 0,
+        r30: 0, r50: 0, r75: 0, r100: 0,
+        dotBalls: 0, maidens: 0, wickets: 0, threeW: 0, economyRate: 0,
+        matchesPlayed: rows.length,
+        playedMatches: rows.map(function(r){
+          return { matchNo: r.matchNo, match: r.match, points: r.points, status: 'Played' };
+        })
+      };
+    }
+  }
+
+  currentPlayerDetailName = playerName;
   document.getElementById('playerDrawerAvatar').textContent = (playerName || 'P').trim().charAt(0).toUpperCase();
   document.getElementById('playerDrawerName').textContent = playerName;
   document.getElementById('playerDrawerBadges').innerHTML = playerHeaderBadge(detail.role, detail.team, meta.origin || 'IND');
   var franchiseText = detail.franchise && detail.franchise !== '-' ? detail.franchise : 'Unpicked';
   document.getElementById('playerDrawerSubmeta').textContent = franchiseText;
   document.getElementById('playerDrawerSeasonPoints').textContent = formatMaybeNumber(detail.totalPoints);
+
+  // Store detail so renderPlayerDrawerTab can access it even for fallback players
+  window._currentDrawerDetail = detail;
+
   switchPlayerTab('overview');
   document.getElementById('playerDrawerOverlay').classList.add('open');
   document.getElementById('playerDrawer').classList.add('open');
@@ -4105,7 +4686,7 @@ function doLogin(){
 <!-- BOTTOM TAB BAR (mobile only) -->
 <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
   <div class="bottom-nav-inner">
-    <button class="bn-tab active" id="bnt-leaderboard" onclick="go('leaderboard',document.getElementById('ni-leaderboard'));setBottomTab('leaderboard')">
+    <button class="bn-tab active" id="bnt-leaderboard" onclick="go('leaguedashboard',document.getElementById('ni-leaguedashboard'));setBottomTab('leaderboard')">
       <span class="bn-icon">🏆</span>
       <span>League</span>
     </button>
