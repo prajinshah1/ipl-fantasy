@@ -601,6 +601,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .db-squad-count{font-size:11px;color:var(--muted);}
 .db-squad-pts{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:800;color:var(--teal);}
 .db-performers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;margin-bottom:8px;}
+.db-shortcuts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;}
+.db-shortcut-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;transition:all .15s;}
+.db-shortcut-card:hover{border-color:var(--gold);background:rgba(245,166,35,.04);transform:translateY(-2px);}
+.db-shortcut-icon{font-size:28px;flex-shrink:0;}
+.db-shortcut-body{flex:1;}
+.db-shortcut-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.db-shortcut-sub{font-size:12px;color:var(--muted);line-height:1.4;}
+.db-shortcut-arrow{font-size:22px;font-weight:700;color:var(--gold);flex-shrink:0;}
+@media(max-width:560px){.db-shortcuts-row{grid-template-columns:1fr;}}
 .db-performer-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px;cursor:pointer;transition:all .15s;}
 .db-performer-card:hover{border-color:var(--border2);transform:translateY(-2px);}
 .db-performer-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -1221,6 +1230,7 @@ window.__firebaseReadyPromise = (async function(){
         <button class="sb-item" id="ni-franchisepoints" onclick="go('franchisepoints',this)"><span class="sb-item-ico">&#9645;</span>Match-wise - Franchise Wise Points</button>
         <button class="sb-item" id="ni-predictions" onclick="go('predictions',this)"><span class="sb-item-ico">&#128161;</span>Predictions</button>
         <button class="sb-item" id="ni-franchiseplayerpoints" onclick="go('franchiseplayerpoints',this)"><span class="sb-item-ico">&#128101;</span>Franchise-wise Player-wise Points</button>
+        <button class="sb-item" id="ni-unpickedplayers" onclick="go('unpickedplayers',this)"><span class="sb-item-ico">🔍</span>Unpicked Players</button>
       </div>
     </div>
     <!-- FRANCHISE TEAMS -->
@@ -1322,6 +1332,27 @@ window.__firebaseReadyPromise = (async function(){
     <!-- RECENT MATCH POINTS -->
     <div class="db-section-label">📊 Last Match — Top Performers</div>
     <div id="dbTopPerformers" class="db-performers-grid"></div>
+
+    <!-- QUICK SHORTCUTS -->
+    <div class="db-section-label" style="margin-top:20px;">🔗 Quick Access</div>
+    <div class="db-shortcuts-row">
+      <div class="db-shortcut-card" id="dbShortcutUnpicked">
+        <div class="db-shortcut-icon">🔍</div>
+        <div class="db-shortcut-body">
+          <div class="db-shortcut-title">Unpicked Players</div>
+          <div class="db-shortcut-sub">Top scorers not owned by any franchise</div>
+        </div>
+        <div class="db-shortcut-arrow">›</div>
+      </div>
+      <div class="db-shortcut-card" id="dbShortcutAllPlayers">
+        <div class="db-shortcut-icon">👥</div>
+        <div class="db-shortcut-body">
+          <div class="db-shortcut-title">All Players Report</div>
+          <div class="db-shortcut-sub">Full player database with roles and franchises</div>
+        </div>
+        <div class="db-shortcut-arrow">›</div>
+      </div>
+    </div>
   </div>
   <div class="page" id="page-leaderboard">
     <div class="page-hdr"><h2>Leaderboard</h2><p>Player points plus season-end prediction bonus.</p></div>
@@ -1387,6 +1418,57 @@ window.__firebaseReadyPromise = (async function(){
     </div>
   </div>
   <div class="page" id="page-franchiseplayerboard"><div class="page-hdr"><h2>Player Board</h2><p>Player board coming next.</p></div><div class="coming-soon"><h3>Player Board</h3><p>Send the layout details and this section will be built next.</p></div></div>
+
+  <!-- UNPICKED PLAYERS -->
+  <div class="page" id="page-unpickedplayers">
+    <div class="page-hdr">
+      <h2>Unpicked Players</h2>
+      <p>Players not owned by any franchise, ranked by total points from Points Report. Use this to identify waiver targets.</p>
+    </div>
+    <!-- Filter bar -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <input id="unpickedSearch" type="text" placeholder="Search player..." style="flex:1;min-width:160px;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;"/>
+      <select id="unpickedRoleFilter" style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;cursor:pointer;">
+        <option value="ALL">All Roles</option>
+        <option value="BAT">BAT</option>
+        <option value="BOWL">BOWL</option>
+        <option value="WK">WK</option>
+        <option value="AR">AR</option>
+      </select>
+      <select id="unpickedTeamFilter" style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;cursor:pointer;min-width:130px;">
+        <option value="ALL">All IPL Teams</option>
+        <option>CSK</option><option>DC</option><option>GT</option><option>KKR</option>
+        <option>LSG</option><option>MI</option><option>PBKS</option><option>RCB</option>
+        <option>RR</option><option>SRH</option>
+      </select>
+      <select id="unpickedTypeFilter" style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;cursor:pointer;">
+        <option value="ALL">IND + OVS</option>
+        <option value="IND">Indian</option>
+        <option value="OVS">Overseas</option>
+      </select>
+    </div>
+    <!-- Summary stats -->
+    <div id="unpickedSummary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px;"></div>
+    <!-- Table -->
+    <div class="roles-table-wrap">
+      <table class="roles-tbl" id="unpickedTable">
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th>Player</th>
+            <th>IPL Team</th>
+            <th>Role</th>
+            <th>Type</th>
+            <th style="text-align:right;">Matches</th>
+            <th style="text-align:right;">Total Pts</th>
+            <th style="text-align:right;">Avg / Match</th>
+            <th style="text-align:right;">Best</th>
+          </tr>
+        </thead>
+        <tbody id="unpickedBody"></tbody>
+      </table>
+    </div>
+  </div>
 
   <!-- ALL FRANCHISES -->
   <div class="page" id="page-allfranchises">
@@ -1986,6 +2068,7 @@ function toggleSection(id) {
 var PAGE_TITLES = {
   leaguedashboard:"League",leaderboard:"Leaderboard",pointschart:"Points Chart",
   franchisepoints:"Match-wise - Franchise Wise Points",predictions:"Predictions",franchiseplayerpoints:"Franchise-wise Player-wise Points",franchiseplayerboard:"Player Board",
+  unpickedplayers:"Unpicked Players",
   allfranchises:"All Franchise Current Teams",
   waivers:"Waivers",mybids:"My Waiver Bids",transfers:"All Transfers",
   propose:"Propose Trade",tradeoffers:"Trade Offers",alltrades:"All Trades",
@@ -2028,6 +2111,7 @@ function go(page, btn) {
   if (page === 'mybids') renderWaiverMyBidsPage();
   if (page === 'transfers') renderWaiverTransfersPage();
   if (page === 'leaguedashboard') initDashboard();
+  if (page === 'unpickedplayers') initUnpickedPlayers();
 }
 
 // ---- HELPERS ----
@@ -2059,6 +2143,111 @@ var FRANCHISES = ['Bhavya','Darshil','Hersh','Jash','Karan','Prajin','Sanket'];
 var FRANCHISE_COLORS = {Bhavya:'#f5a623',Darshil:'#4cc9f0',Hersh:'#06d6a0',Jash:'#c084fc',Karan:'#ef476f',Prajin:'#ff6482',Sanket:'#40c9a2'};
 
 
+// ---- UNPICKED PLAYERS ----
+function initUnpickedPlayers() {
+  // Reset filters
+  var s = document.getElementById('unpickedSearch');
+  if (s) s.value = '';
+  renderUnpickedPlayers();
+  // Attach filter listeners (idempotent)
+  ['unpickedSearch','unpickedRoleFilter','unpickedTeamFilter','unpickedTypeFilter'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && !el._unpickedBound) {
+      el.addEventListener(id === 'unpickedSearch' ? 'input' : 'change', renderUnpickedPlayers);
+      el._unpickedBound = true;
+    }
+  });
+}
+
+function renderUnpickedPlayers() {
+  var q = (document.getElementById('unpickedSearch') ? document.getElementById('unpickedSearch').value : '').toLowerCase();
+  var role = document.getElementById('unpickedRoleFilter') ? document.getElementById('unpickedRoleFilter').value : 'ALL';
+  var team = document.getElementById('unpickedTeamFilter') ? document.getElementById('unpickedTeamFilter').value : 'ALL';
+  var type = document.getElementById('unpickedTypeFilter') ? document.getElementById('unpickedTypeFilter').value : 'ALL';
+
+  // Build points map from POINTS_DATA for players with franchise = '-'
+  var ptsByPlayer = {};
+  var matchesByPlayer = {};
+  var bestByPlayer = {};
+  POINTS_DATA.forEach(function(r) {
+    if (r.franchise !== '-') return;
+    var p = r.player;
+    if (!ptsByPlayer[p]) { ptsByPlayer[p] = 0; matchesByPlayer[p] = 0; bestByPlayer[p] = -999; }
+    ptsByPlayer[p] += Number(r.points || 0);
+    matchesByPlayer[p]++;
+    if (Number(r.points) > bestByPlayer[p]) bestByPlayer[p] = Number(r.points);
+  });
+
+  // Get unpicked players from PLAYERS master
+  var unpicked = PLAYERS.filter(function(p) { return !p.franchise || p.franchise === '' || p.franchise === '-'; });
+
+  // Merge with points data — include players with 0 points too
+  var rows = unpicked.map(function(p) {
+    var total = ptsByPlayer[p.name] || 0;
+    var matches = matchesByPlayer[p.name] || 0;
+    var best = bestByPlayer[p.name] !== undefined && bestByPlayer[p.name] !== -999 ? bestByPlayer[p.name] : 0;
+    var avg = matches > 0 ? Math.round((total / matches) * 10) / 10 : 0;
+    return { name: p.name, role: p.role, team: p.iplTeam, origin: p.origin, total: total, matches: matches, avg: avg, best: best };
+  });
+
+  // Apply filters
+  rows = rows.filter(function(r) {
+    return (!q || r.name.toLowerCase().indexOf(q) >= 0 || r.team.toLowerCase().indexOf(q) >= 0) &&
+           (role === 'ALL' || r.role === role) &&
+           (team === 'ALL' || r.team === team) &&
+           (type === 'ALL' || r.origin === type);
+  });
+
+  // Sort by total points desc
+  rows.sort(function(a, b) { return b.total - a.total || a.name.localeCompare(b.name); });
+
+  // Summary cards
+  var summary = document.getElementById('unpickedSummary');
+  if (summary) {
+    var withPts = rows.filter(function(r) { return r.total > 0; });
+    var topPts = rows.length ? rows[0].total : 0;
+    var topName = rows.length ? rows[0].name : '-';
+    summary.innerHTML = [
+      { val: rows.length, label: 'Unpicked Players' },
+      { val: withPts.length, label: 'Scored Points' },
+      { val: topPts, label: 'Top Score' },
+      { val: topName, label: 'Top Performer', small: true }
+    ].map(function(s) {
+      return '<div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 12px;text-align:center;">' +
+        '<div style="font-family:\'Rajdhani\',sans-serif;font-size:' + (s.small ? '20px' : '28px') + ';font-weight:800;color:var(--teal);line-height:1;margin-bottom:4px;">' + escapeHtml(String(s.val)) + '</div>' +
+        '<div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;">' + s.label + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Table
+  var tbody = document.getElementById('unpickedBody');
+  if (!tbody) return;
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--muted);">No unpicked players found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(function(r, idx) {
+    var roleCls = r.role === 'BAT' ? 'role-badge bat' : r.role === 'BOWL' ? 'role-badge bowl' : r.role === 'AR' ? 'role-badge ar' : 'role-badge wk';
+    var origBadge = r.origin === 'IND' ? '<span class="type-badge ind">IND</span>' : '<span class="type-badge ovs">OVS</span>';
+    var ptsColor = r.total > 0 ? 'var(--teal)' : (r.total < 0 ? 'var(--red)' : 'var(--muted)');
+    var rowStyle = idx === 0 && r.total > 0 ? 'background:rgba(6,214,160,0.04);' : '';
+    return '<tr style="' + rowStyle + '" class="points-row-clickable" onclick="openPlayerDrawer(' + JSON.stringify(r.name) + ')">' +
+      '<td style="color:var(--muted);font-weight:700;text-align:center;">' + (idx+1) + '</td>' +
+      '<td style="font-weight:700;color:var(--text);">' + escapeHtml(r.name) + '</td>' +
+      '<td style="color:var(--text2);">' + escapeHtml(r.team) + '</td>' +
+      '<td><span class="' + roleCls + '">' + r.role + '</span></td>' +
+      '<td>' + origBadge + '</td>' +
+      '<td style="text-align:right;color:var(--text2);">' + (r.matches || '-') + '</td>' +
+      '<td style="text-align:right;font-family:\'Rajdhani\',sans-serif;font-size:22px;font-weight:800;color:' + ptsColor + ';">' + (r.matches ? r.total : '-') + '</td>' +
+      '<td style="text-align:right;color:var(--text2);">' + (r.matches ? r.avg : '-') + '</td>' +
+      '<td style="text-align:right;color:var(--gold);font-weight:700;">' + (r.matches ? r.best : '-') + '</td>' +
+    '</tr>';
+  }).join('');
+}
+
 // Sum all points for a player across all matches from POINTS_DATA
 function getPlayerPoints(playerName) {
   var total = 0;
@@ -2077,6 +2266,11 @@ function initDashboard() {
   renderDBChart();
   renderDBSquads();
   renderDBTopPerformers();
+  // Shortcut cards
+  var su = document.getElementById('dbShortcutUnpicked');
+  if (su) { su.onclick = function(){ go('unpickedplayers', document.getElementById('ni-unpickedplayers')); }; }
+  var sa = document.getElementById('dbShortcutAllPlayers');
+  if (sa) { sa.onclick = function(){ go('allplayers', document.getElementById('ni-allplayers')); }; }
 }
 
 function renderDBHero() {
@@ -3291,7 +3485,7 @@ function uniqueIplTeamsOptions(){
   var _origGo = window.go;
   window.go = function(page, btn){
     _origGo(page, btn);
-    var map = {leaguedashboard:'leaderboard',leaderboard:'leaderboard',pointschart:'leaderboard',franchisepoints:'leaderboard',predictions:'leaderboard',franchiseplayerpoints:'leaderboard',
+    var map = {leaguedashboard:'leaderboard',leaderboard:'leaderboard',pointschart:'leaderboard',franchisepoints:'leaderboard',predictions:'leaderboard',franchiseplayerpoints:'leaderboard',unpickedplayers:'leaderboard',
                allfranchises:'allfranchises',myteam:'allfranchises',franchiseplayerboard:'allfranchises',
                waivers:'waivers',mybids:'waivers',transfers:'waivers',propose:'waivers',tradeoffers:'waivers',alltrades:'waivers',
                pointsreport:'pointsreport',playerstats:'pointsreport',allschedules:'pointsreport'};
