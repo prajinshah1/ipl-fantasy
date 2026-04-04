@@ -21,7 +21,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 #app{position:relative;z-index:1;display:flex;flex-direction:column;height:100vh;}
 
 /* TOP NAV */
-.topnav{height:54px;flex-shrink:0;background:rgba(8,13,22,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:100;}
+.topnav{height:54px;flex-shrink:0;background:rgba(8,13,22,0.98);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:100;position:relative;}
+.topnav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(6,214,160,0.3),rgba(245,166,35,0.3),transparent);}
 .hamburger{display:none;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px 6px;border-radius:6px;line-height:1;}
 .nav-brand{display:flex;align-items:center;gap:10px;}
 .nav-brand-icon{width:30px;height:30px;background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
@@ -272,17 +273,151 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .chart-series{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
 .chart-point{stroke:#080d16;stroke-width:2;}
 
+/* ===================== BOTTOM TAB BAR ===================== */
+.bottom-nav{
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:60px;
+  background:rgba(8,13,22,0.97);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,0.08);
+  z-index:100;
+  padding:0 4px;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.bottom-nav-inner{
+  display:flex;
+  height:60px;
+  align-items:stretch;
+}
+.bn-tab{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  background:none;
+  border:none;
+  color:var(--muted);
+  cursor:pointer;
+  padding:6px 2px;
+  border-radius:12px;
+  transition:color 0.15s, background 0.15s;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-family:'Barlow Condensed',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+}
+.bn-tab:active{background:rgba(255,255,255,0.05);}
+.bn-tab.active{color:var(--teal);}
+.bn-tab.active .bn-icon{color:var(--teal);}
+.bn-icon{font-size:20px;line-height:1;transition:transform 0.15s;}
+.bn-tab.active .bn-icon{transform:translateY(-1px);}
+.bn-tab .bn-pip{
+  position:absolute;
+  top:8px; right:50%;
+  transform:translateX(8px);
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--red);
+  display:none;
+}
+
 /* MOBILE */
 @media(max-width:740px){
+  .bottom-nav{display:flex;flex-direction:column;}
   .sidebar{position:fixed;top:54px;left:0;height:calc(100vh - 54px);transform:translateX(-100%);z-index:50;box-shadow:4px 0 32px rgba(0,0,0,0.6);}
   .sidebar.open{transform:translateX(0);}
   .sb-close{display:block!important;}
   .hamburger{display:block!important;}
   .nav-brand{display:none;}
   .nav-page-title{display:block;}
-  .page{padding:16px 14px 60px;}
+  /* Account for both topnav + bottom nav */
+  .page{padding:16px 14px 80px;}
   .app-body{height:calc(100vh - 54px);}
   .main-wrap{width:100%;}
+
+  /* Tighten page header on mobile */
+  .page-hdr h2{font-size:20px;}
+  .page-hdr p{font-size:12px;}
+
+  /* Cards go full width */
+  .leader-top-grid{grid-template-columns:1fr!important;}
+  .leader-card{padding:14px 16px;}
+  .leader-rank{font-size:22px;}
+  .leader-name{font-size:15px;margin-bottom:6px;}
+  .leader-total{font-size:28px;}
+
+  /* Leaderboard table: collapse progress bar, tighten */
+  #page-leaderboard .roles-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  #page-leaderboard table{min-width:520px;}
+
+  /* Franchise player points table */
+  #page-franchiseplayerpoints .roles-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Franchise teams cards */
+  .fr-team-card{padding:14px;}
+  .fr-team-name{font-size:18px;}
+  .fr-stat-row{grid-template-columns:repeat(3,1fr);}
+  .fr-mini-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* All players filters stack */
+  #playerSearch{min-width:0!important;}
+
+  /* Points report filters full width */
+  .points-filters{padding:10px;}
+  .filter-dd{min-width:100%;flex:none;}
+
+  /* Stat cards 2-column on mobile */
+  .player-stats-grid,.player-stats-grid.cols-5{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .player-stat-card{min-height:80px;padding:12px 10px;}
+  .player-stat-value{font-size:22px;}
+  .player-stat-label{font-size:12px;}
+
+  /* Prediction grid */
+  .prediction-control-row{grid-template-columns:1fr 1fr;}
+  .prediction-summary-grid{grid-template-columns:1fr 1fr;}
+
+  /* Points chart scrollable */
+  .linechart-wrap{padding:4px;height:260px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Waiver budget grid */
+  .waiver-master-budget-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .waiver-balance-grid{grid-template-columns:repeat(2,1fr)!important;}
+
+  /* Match breakdown */
+  .match-breakdown-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Player drawer full screen */
+  .player-drawer{width:100vw;border-left:none;}
+  .player-drawer-header{padding:14px 16px 10px;}
+  .player-avatar{width:56px;height:56px;font-size:18px;}
+  .player-header-name{font-size:20px;margin-bottom:6px;}
+  .player-points-value{font-size:36px;}
+  .player-points-box{padding-right:46px;}
+  .player-drawer-body{padding:16px;}
+  .player-history-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Topnav tighter */
+  .topnav{padding:0 12px;gap:8px;}
+  .topnav .nav-page-title{font-size:14px;}
+
+  /* Coming soon padding */
+  .coming-soon{padding:40px 16px;}
+
+  /* Waiver cards */
+  .waiver-card,.waiver-completed-card{padding:14px;}
+  .waiver-player-name{font-size:16px;}
+  .waiver-deadline .big{font-size:22px;}
+  .waiver-mybid .value{font-size:15px;}
+  .waiver-actions{gap:8px;}
+  .waiver-btn-primary,.waiver-btn-secondary,.waiver-btn-admin{padding:10px 14px;font-size:13px;}
 }
 
 /* ---- PAGE LAYOUT ---- */
@@ -704,7 +839,9 @@ window.__firebaseReadyPromise = (async function(){
     <span class="nav-brand-name">IPL Fantasy 2026</span>
   </div>
   <span class="nav-page-title" id="mobileTitle">Dashboard</span>
-  <div class="nav-right"></div>
+  <div class="nav-right">
+    <div id="navUserPill" style="display:none;background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.25);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--teal);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.04em;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+  </div>
 </nav>
 
 <div class="app-body">
@@ -2573,6 +2710,30 @@ function uniqueIplTeamsOptions(){
   saveWaiverState();
 })();
 
+// ---- MOBILE INIT ----
+(function mobileInit(){
+  // Show user pill in topnav
+  function showPill(){
+    var pill = document.getElementById('navUserPill');
+    if(pill){ pill.textContent = window.currentUser || 'admin'; pill.style.display='block'; }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', showPill);
+  else showPill();
+
+  // Patch go() to sync bottom tabs
+  var _origGo = window.go;
+  window.go = function(page, btn){
+    _origGo(page, btn);
+    var map = {leaderboard:'leaderboard',pointschart:'leaderboard',franchisepoints:'leaderboard',predictions:'leaderboard',franchiseplayerpoints:'leaderboard',
+               allfranchises:'allfranchises',myteam:'allfranchises',franchiseplayerboard:'allfranchises',
+               waivers:'waivers',mybids:'waivers',transfers:'waivers',propose:'waivers',tradeoffers:'waivers',alltrades:'waivers',
+               pointsreport:'pointsreport',playerstats:'pointsreport',allschedules:'pointsreport'};
+    var tab = map[page];
+    if(tab && typeof setBottomTab === 'function') setBottomTab(tab);
+    // No active tab for settings/admin pages — that's fine
+  };
+})();
+
 </script>
 
 <div id="playerDrawerOverlay" class="player-drawer-overlay" onclick="closePlayerDrawer()"></div>
@@ -3717,7 +3878,18 @@ function doLogin(){
   window.__firebaseApplyingRemote = false;
 
   async function loadRemoteFirst(){
+    // Wait for the module promise to be assigned (module scripts run after classic scripts)
+    let attempts = 0;
+    while (!window.__firebaseReadyPromise && attempts++ < 50) {
+      await new Promise(function(r){ setTimeout(r, 100); });
+    }
+    if (!window.__firebaseReadyPromise) {
+      throw new Error('Firebase module never initialised');
+    }
     await window.__firebaseReadyPromise;
+    if (typeof window.loadRemoteLeagueState !== 'function') {
+      throw new Error('loadRemoteLeagueState not available after Firebase ready');
+    }
     const remote = await window.loadRemoteLeagueState();
 
     if (remote) {
@@ -3758,7 +3930,11 @@ function doLogin(){
 
     try {
       window.__firebaseSavingState = true;
-      await window.__firebaseReadyPromise;
+      if (window.__firebaseReadyPromise) await window.__firebaseReadyPromise;
+      if (typeof window.saveRemoteLeagueState !== 'function') {
+        console.warn('saveRemoteLeagueState not available');
+        return false;
+      }
       await window.saveRemoteLeagueState({
         waivers: state.waivers,
         transfers: state.transfers,
@@ -3924,6 +4100,44 @@ function doLogin(){
     </div>`;
   };
 })();
+</script>
+
+<!-- BOTTOM TAB BAR (mobile only) -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+  <div class="bottom-nav-inner">
+    <button class="bn-tab active" id="bnt-leaderboard" onclick="go('leaderboard',document.getElementById('ni-leaderboard'));setBottomTab('leaderboard')">
+      <span class="bn-icon">🏆</span>
+      <span>League</span>
+    </button>
+    <button class="bn-tab" id="bnt-allfranchises" onclick="go('allfranchises',document.getElementById('ni-allfranchises'));setBottomTab('allfranchises')">
+      <span class="bn-icon">👥</span>
+      <span>Teams</span>
+    </button>
+    <button class="bn-tab" id="bnt-waivers" onclick="go('waivers',document.getElementById('ni-waivers'));setBottomTab('waivers')">
+      <span class="bn-icon">🔄</span>
+      <span>Waivers</span>
+    </button>
+    <button class="bn-tab" id="bnt-pointsreport" onclick="go('pointsreport',document.getElementById('ni-pointsreport'));setBottomTab('pointsreport')">
+      <span class="bn-icon">📊</span>
+      <span>Points</span>
+    </button>
+    <button class="bn-tab" id="bnt-menu" onclick="toggleSidebar()">
+      <span class="bn-icon">☰</span>
+      <span>More</span>
+    </button>
+  </div>
+</nav>
+
+<script>
+function setBottomTab(page) {
+  var tabs = ['leaderboard','allfranchises','waivers','pointsreport','menu'];
+  tabs.forEach(function(t) {
+    var el = document.getElementById('bnt-' + t);
+    if (el) el.classList.remove('active');
+  });
+  var active = document.getElementById('bnt-' + page);
+  if (active) active.classList.add('active');
+}
 </script>
 
 </body>
