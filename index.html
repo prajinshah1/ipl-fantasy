@@ -1193,6 +1193,47 @@ window.__firebaseReadyPromise = (async function(){
 }
 </style>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init({ publicKey: '-2Ojv3ZI01l_3M3mv' });
+})();
+
+function sendNominationEmail(playerName, playerTeam, playerRole, nominatedBy, closesAt) {
+  var emails = [
+    'jashshah2403@gmail.com',
+    'karanpatel2011@yahoo.in',
+    'ssanketsheth@gmail.com',
+    'bhavya2422@gmail.com',
+    'darshilpandya123@gmail.com',
+    'prajin_shah@yahoo.com',
+    'hershdoshi266@gmail.com'
+  ];
+
+  // Format closes time nicely
+  var d = new Date(closesAt);
+  var opts = { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' };
+  var closesStr = d.toLocaleString('en-IN', opts) + ' IST';
+
+  var params = {
+    player_name:  playerName,
+    player_team:  playerTeam,
+    player_role:  playerRole,
+    nominated_by: nominatedBy,
+    closes_at:    closesStr,
+    to_emails:    emails.join(',')
+  };
+
+  emailjs.send('service_211z24p', 'template_m2ru2ld', params)
+    .then(function() {
+      console.log('Nomination email sent successfully');
+    })
+    .catch(function(err) {
+      console.warn('Email send failed:', err);
+    });
+}
+</script>
 </head>
 <body>
 <div id="app">
@@ -3295,6 +3336,11 @@ function submitWaiverNomination(){
     bids: [{ franchise: franchise, amount: amount, dropPlayer: outPlayer, timestamp: now, isNomination: true }]
   });
   saveWaiverState();
+  // Send nomination email
+  try {
+    var nomP = getPlayerByName(waiverNomSelectedPlayer) || {};
+    sendNominationEmail(waiverNomSelectedPlayer, nomP.iplTeam || '-', nomP.role || '-', franchise, closes);
+  } catch(e) { console.warn('Email error:', e); }
   closeWaiverModal('waiverNominationModal');
   renderWaiverOpenPage();
   renderWaiverMyBidsPage();
@@ -4794,6 +4840,18 @@ function doLogin(){
       alert('Cloud save failed. Please try again.');
       return;
     }
+
+    // Send nomination email to all franchises
+    try {
+      var nomPlayer = getPlayerByName(window.waiverNomSelectedPlayer) || {};
+      sendNominationEmail(
+        window.waiverNomSelectedPlayer,
+        nomPlayer.iplTeam || '-',
+        nomPlayer.role || '-',
+        franchise,
+        closes
+      );
+    } catch(e) { console.warn('Email error:', e); }
 
     try { if (typeof closeWaiverModal === 'function') closeWaiverModal('waiverNominationModal'); } catch(e){}
     rerenderWaiverUI();
