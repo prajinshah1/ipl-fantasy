@@ -179,6 +179,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .waiver-btn-secondary:hover{border-color:rgba(0,230,168,.32);color:#9fffd7;}
 .waiver-btn-primary{background:linear-gradient(135deg,#ff00d6,#b400ff);border:none;color:#fff;border-radius:12px;padding:11px 16px;font-size:14px;font-weight:800;cursor:pointer;}
 .waiver-btn-admin{background:linear-gradient(135deg,#00d18f,#06d6a0);color:#06120f;border:none;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;}
+.waiver-btn-delete{background:rgba(239,71,111,0.12);border:1px solid rgba(239,71,111,0.35);color:#ef476f;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer;font-size:13px;}
+.waiver-btn-delete:hover{background:rgba(239,71,111,0.22);}
 .waiver-filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
 .waiver-filter-bar select,.waiver-filter-bar input{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;color:#fff;font-size:14px;outline:none;min-width:170px;}
 .waiver-filter-bar input{flex:1;min-width:260px;}
@@ -2997,9 +2999,21 @@ function humanTime(ts){
   var ampm = hr >= 12 ? 'pm' : 'am'; hr = hr % 12; if (hr===0) hr=12;
   return day + ' ' + mon + ', ' + String(hr).padStart(2,'0') + ':' + min + ' ' + ampm;
 }
+// Returns timestamp for next day 7:00 PM IST (UTC+5:30)
+function nextDay7pmIST() {
+  var IST_OFFSET = 5.5 * 60 * 60 * 1000; // IST = UTC+5:30
+  var nowUTC = Date.now();
+  var nowIST = new Date(nowUTC + IST_OFFSET);
+  // Move to next calendar day in IST
+  var nextDayIST = new Date(nowIST);
+  nextDayIST.setUTCDate(nextDayIST.getUTCDate() + 1);
+  nextDayIST.setUTCHours(13, 30, 0, 0); // 19:00 IST = 13:30 UTC
+  return nextDayIST.getTime();
+}
+
 function waiverStatusMeta(){
   var hasActive = (waiverState.waivers || []).some(function(w){ return w.status === 'active'; });
-  return hasActive ? {title:'NOMINATIONS OPEN', sub:'Nominate until midnight IST · Bidding closes next day midnight IST', rightLabel:'Nominations close in', rightValue:'Today'} : {title:'NOMINATIONS OPEN', sub:'Be the first franchise to nominate a player this cycle.', rightLabel:'Waiver window', rightValue:'Open'};
+  return hasActive ? {title:'NOMINATIONS OPEN', sub:'Nominate any time · Bids close next day 7:00 PM IST', rightLabel:'Nominations close in', rightValue:'Today'} : {title:'NOMINATIONS OPEN', sub:'Be the first franchise to nominate a player this cycle.', rightLabel:'Waiver window', rightValue:'Open'};
 }
 function waiverSortBids(list){
   return list.slice().sort(function(a,b){ if (b.amount !== a.amount) return b.amount - a.amount; return a.timestamp - b.timestamp; });
@@ -3076,7 +3090,7 @@ function submitWaiverNomination(){
   var err = validateWaiverBid(amount, franchise);
   if (err) { alert(err); return; }
   var now = Date.now();
-  var closes = now + 24*60*60*1000;
+  var closes = nextDay7pmIST();
   waiverState.waivers.unshift({
     id: 'W' + now,
     playerName: waiverNomSelectedPlayer,
@@ -3138,6 +3152,18 @@ function adminCompleteWaiver(id){
   renderWaiverTransfersPage();
 }
 
+function adminDeleteWaiver(id){
+  var waiver = waiverState.waivers.find(function(w){ return w.id === id; });
+  if (!waiver) return;
+  var playerName = waiver.playerName || 'this waiver';
+  if (!confirm('Delete waiver for ' + playerName + '? This cannot be undone.')) return;
+  waiverState.waivers = waiverState.waivers.filter(function(w){ return w.id !== id; });
+  saveWaiverState();
+  renderWaiverOpenPage();
+  renderWaiverMyBidsPage();
+  renderWaiverTransfersPage();
+}
+
 function renderAllFranchiseWaiverBalances(){
   return '<div class="waiver-balance-wrap">'+
     '<div class="waiver-balance-title">Balance Waiver Budget Remaining — All Franchises</div>'+
@@ -3178,7 +3204,8 @@ function renderWaiverOpenPage(){
     var p = getPlayerByName(w.playerName) || {};
     var myBid = findLatestBid(w, current);
     var adminBtn = (window.currentUser === 'Admin')
-      ? '<button class="waiver-btn-admin" type="button" onclick="adminCompleteWaiver(\''+escapeAttr(w.id)+'\')">Declare Winner</button>'
+      ? '<button class="waiver-btn-admin" type="button" onclick="adminCompleteWaiver(\''+escapeAttr(w.id)+'\')">Declare Winner</button>' +
+        '<button class="waiver-btn-delete" type="button" onclick="adminDeleteWaiver(\''+escapeAttr(w.id)+'\')">🗑 Delete</button>'
       : '';
     return '<div class="waiver-card">' +
       '<div class="waiver-card-top"><div class="waiver-player-line"><div class="waiver-avatar">'+initials(w.playerName)+'</div><div><div class="waiver-player-name">'+escapeHtml(w.playerName)+'</div><div class="waiver-meta"><span class="waiver-chip '+roleChipClass(p.role || 'AR')+'">'+escapeHtml(p.role || '')+'</span><span class="waiver-chip '+typeChipClass(p.origin || 'IND')+'">'+escapeHtml(p.origin || 'IND')+'</span><span class="waiver-chip team">'+escapeHtml(p.iplTeam || '')+'</span></div></div></div>' +
@@ -3776,7 +3803,7 @@ function doLogin(){
         '<div class="waiver-deadline"><div class="small">Bid closes</div><div class="big">'+humanTime(w.bidClosesAt)+'</div></div></div>' +
         '<div class="waiver-mybid"><div><div class="label">'+escapeHtml(current)+'</div><div class="value">'+(myBid ? formatCompactINR(myBid.amount) : 'No bid yet')+'</div><div class="sub">'+(myBid ? ('Transfer out: ' + escapeHtml(myBid.dropPlayer)) : 'Bids are hidden from other franchises.')+'</div></div>' +
         '<div class="waiver-actions"><button class="waiver-btn-primary" type="button" onclick="openWaiverBidModal(\''+escapeAttr(w.id)+'\')">'+(myBid ? 'Edit Bid' : 'Place Bid')+'</button>' +
-        ((window.currentUser==='Admin') ? '<button class="waiver-btn-admin" type="button" onclick="adminCompleteWaiver(\''+escapeAttr(w.id)+'\')">Declare Winner</button>' : '') +
+        ((window.currentUser==='Admin') ? '<button class="waiver-btn-admin" type="button" onclick="adminCompleteWaiver(\''+escapeAttr(w.id)+'\')">Declare Winner</button><button class="waiver-btn-delete" type="button" onclick="adminDeleteWaiver(\''+escapeAttr(w.id)+'\')">🗑 Delete</button>' : '') +
         '</div></div></div>';
     }).join('');
     root.innerHTML = html;
@@ -4320,7 +4347,7 @@ function doLogin(){
     if (err) { alert(err); return; }
 
     var now = Date.now();
-    var closes = now + 24*60*60*1000;
+    var closes = nextDay7pmIST();
 
     if (!window.waiverState) window.waiverState = { waivers: [], budgets: {} };
     if (!Array.isArray(window.waiverState.waivers)) window.// disabled auto wipe of waivers;
@@ -4550,7 +4577,7 @@ function doLogin(){
 
     var ref = getStateRef();
     var now = Date.now();
-    var closes = now + 24*60*60*1000;
+    var closes = nextDay7pmIST();
 
     ref.waivers.unshift({
       id: 'W' + now,
@@ -4624,6 +4651,21 @@ function doLogin(){
       return;
     }
 
+    rerenderWaiverUI();
+  };
+
+  window.adminDeleteWaiver = async function(id){
+    var ref = getStateRef();
+    var waiver = (ref.waivers || []).find(function(w){ return w.id === id; });
+    if (!waiver) return;
+    var playerName = waiver.playerName || 'this waiver';
+    if (!confirm('Delete waiver for ' + playerName + '? This will permanently remove it from Firebase.')) return;
+    ref.waivers = (ref.waivers || []).filter(function(w){ return w.id !== id; });
+    const saved = await saveCurrentStateToFirebase({ allowEmptyWaivers: true });
+    if (!saved) {
+      alert('Cloud save failed. Please try again.');
+      return;
+    }
     rerenderWaiverUI();
   };
 
