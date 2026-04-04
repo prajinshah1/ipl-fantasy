@@ -1211,7 +1211,6 @@ function sendNominationEmail(playerName, playerTeam, playerRole, nominatedBy, cl
     'hershdoshi266@gmail.com'
   ];
 
-  // Format closes time nicely
   var d = new Date(closesAt);
   var opts = { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' };
   var closesStr = d.toLocaleString('en-IN', opts) + ' IST';
@@ -1220,7 +1219,6 @@ function sendNominationEmail(playerName, playerTeam, playerRole, nominatedBy, cl
     player_name:  playerName,
     player_team:  playerTeam,
     player_role:  playerRole,
-    nominated_by: nominatedBy,
     closes_at:    closesStr,
     to_emails:    emails.join(',')
   };
